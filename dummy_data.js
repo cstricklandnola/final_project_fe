@@ -1,5 +1,5 @@
 
-const dummyDatabase = {
+const dummyDatabase = [{
     itemId: 1,
     isActive: true,
     name: "First Item",
@@ -8,11 +8,24 @@ const dummyDatabase = {
     featured: false,
     onHand: 20,
     keywords: ["car", "engine"],
-    category: "televisions",
+    category: "cars",
     photos: ["http://placekitten.com/200/287", "http://placekitten.com/200/299", "http://placekitten.com/200/300"],
-    reviews: ["reviewId"]
+    reviews: ["reviewId"]},
+    {
+        itemId: 2,
+        isActive: true,
+        name: "Second Item",
+        description: "This is a second description",
+        cost: 1.99,
+        featured: false,
+        onHand: 20,
+        keywords: ["car", "engine"],
+        category: "televisions",
+        photos: ["http://placekitten.com/200/227", "http://placekitten.com/200/199", "http://placekitten.com/200/111"],
+        reviews: ["reviewId"]
+
     
-}
+}]
 
 const dummyUserDataBase = [{
     userId: 1,

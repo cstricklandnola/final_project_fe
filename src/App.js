@@ -6,13 +6,22 @@ import{fetchUserData, fetchAllActivites} from "./api"
 import {
   Login,
   Register,
-  Home
+  Home,
+  Listings
 } from "./components"
 
 const App = () => {
   const [authorized, setAuthorized] = useState(false);
   const [currentUser, setCurrentUser] = useState("");
   const [loggedIn, setLoggedIn] = useState(getToken());
+  
+  //Temp variable settings
+  
+  const  test_currentUser = "Joe Fake"
+  const  test_authorized = "FakeAuthorization"
+
+
+  //The above needs to be deleted.
 
   
   // useEffect(async () => {
@@ -68,7 +77,13 @@ const App = () => {
              setLoggedIn={setLoggedIn}
              /> 
           </Route>
-          
+          <Route path='/Listings'>
+             <Listings
+             setAuthorized={setAuthorized} 
+             loggedIn={loggedIn}
+             setLoggedIn={setLoggedIn}
+             /> 
+          </Route>
          
         </Switch>  
       </main>
