@@ -1,3 +1,7 @@
+import React, { useState } from "react";
+import { storeToken } from "../auth";
+import {Redirect} from "react-router-dom"
+
 const handleSubmitAddToCart = async (item) => {
   try {
     alert("ItemId: "+ item.itemId + " was added to the cart.");
@@ -61,7 +65,7 @@ const Listings = () => {
               <h2><b>Product:</b> {item.name}</h2>
               <h4><b>Price:</b> ${item.cost}</h4>
               <li><b>Description:</b> {item.description}</li>
-              <li><b>Keywords:</b> {item.keywords}</li>
+              <li><b>Reviews:</b> {item.reviews}</li>
               <form>
                 <button
                   type="button"

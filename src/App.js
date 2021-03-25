@@ -8,7 +8,8 @@ import {
   Register,
   Home,
   Listings,
-  CreateListing 
+  CreateListing,
+  ManageUsers
 } from "./components"
 
 const App = () => {
@@ -44,7 +45,9 @@ const App = () => {
       <nav className="navBar">
         <h1>Spend Money!</h1>
         <div>
-          <Link className="Link" to= '/'>Home</Link>
+          <Link className="Link" to= '/ManageUsers'>Manage Users</Link>
+          <Link className="Link" to= '/CreateListing'>Create Listings</Link>
+          <Link className="Link" to= '/Listings'>Listings</Link>
           {/* !authorized  */ !loggedIn ? (<Link className="Link" to= '/Login'>Login</Link>) : null}
           {/* !authorized  */ !loggedIn ? (<Link className="Link" to= '/Register'>Sign Up</Link>) : null}
           {loggedIn ? <Link className="Link" onClick={() => {
@@ -61,6 +64,15 @@ const App = () => {
         <Switch>
           <Route exact path= '/'>
             <Home />
+          </Route>
+          <Route path='/ManageUsers'>
+              <ManageUsers
+                loggedIn={loggedIn}
+                setLoggedIn={setLoggedIn}
+                setCurrentUser={setCurrentUser}
+                setAuthorized={setAuthorized}
+                authorized={authorized}
+              />
           </Route>
           <Route path='/Login'>
               <Login
