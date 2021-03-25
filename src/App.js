@@ -7,7 +7,8 @@ import {
   Login,
   Register,
   Home,
-  Listings
+  Listings,
+  CreateListing 
 } from "./components"
 
 const App = () => {
@@ -79,6 +80,13 @@ const App = () => {
           </Route>
           <Route path='/Listings'>
              <Listings
+             setAuthorized={setAuthorized} 
+             loggedIn={loggedIn}
+             setLoggedIn={setLoggedIn}
+             /> 
+          </Route>
+          <Route path='/CreateListing'>
+             <CreateListing
              setAuthorized={setAuthorized} 
              loggedIn={loggedIn}
              setLoggedIn={setLoggedIn}
