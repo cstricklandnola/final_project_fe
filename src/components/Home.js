@@ -2,6 +2,7 @@ import Carousel from 'react-bootstrap/Carousel'
 import Card from 'react-bootstrap/Card'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { useState } from 'react'
+import Button from 'react-bootstrap/Button'
 
 const handleSubmitAddToCart = async (item) => {
     try {
@@ -68,14 +69,14 @@ const Home = () => {
               
             />
             <Carousel.Caption>
-          <h3><b>Product:</b> {item.name}</h3>
-           <p><b>Price:</b> ${item.cost}</p>
-           <button
+          <h3>{item.name}</h3>
+           <p>${item.cost}</p>
+           <Button
                   type="button"
                   onClick={() => handleSubmitAddToCart(item)}
                 >
                   Add to Cart
-                </button>
+                </Button>
           </Carousel.Caption>
           </Carousel.Item>
               

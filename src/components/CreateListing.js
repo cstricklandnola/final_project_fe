@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import {Redirect} from "react-router-dom"
+import Button from 'react-bootstrap/Button'
 const CreateListing = (props) => {
   const [listingData, setListingData] = useState("");
 
@@ -83,7 +84,7 @@ const CreateListing = (props) => {
           required
           onChange={(e) => setListingData({ ...listingData, featured: e.target.value })}
         />
-        <button type="submit">submit</button>
+        <Button type="submit">submit</Button>
       </form>
     );
    

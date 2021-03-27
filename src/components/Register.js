@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import {Redirect} from "react-router-dom"
+import Button from 'react-bootstrap/Button'
 const Register = (props) => {
   const [user, setUser] = useState("");
 
