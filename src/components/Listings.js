@@ -1,6 +1,9 @@
 import React, { useState } from "react";
+import Card from 'react-bootstrap/Card'
+import CardGroup from 'react-bootstrap/CardGroup'
 import { storeToken } from "../auth";
 import {Redirect} from "react-router-dom"
+import { CardColumns } from "react-bootstrap";
 
 const handleSubmitAddToCart = async (item) => {
   try {
@@ -46,6 +49,57 @@ const Listings = () => {
       ],
       reviews: ["reviewId"],
     },
+    {
+      itemId: 3,
+      isActive: true,
+      name: "Third Item",
+      description: "This is a second description",
+      cost: 1.99,
+      featured: false,
+      onHand: 20,
+      keywords: ["car", "engine"],
+      category: "televisions",
+      photos: [
+        "http://placekitten.com/200/199",
+        "http://placekitten.com/200/199",
+        "http://placekitten.com/200/111",
+      ],
+      reviews: ["reviewId"],
+    },
+    {
+      itemId: 4,
+      isActive: true,
+      name: "Fourth Item",
+      description: "This is a second description",
+      cost: 1.99,
+      featured: false,
+      onHand: 20,
+      keywords: ["car", "engine"],
+      category: "televisions",
+      photos: [
+        "http://placekitten.com/200/105",
+        "http://placekitten.com/200/199",
+        "http://placekitten.com/200/111",
+      ],
+      reviews: ["reviewId"],
+    },
+    {
+      itemId: 5,
+      isActive: true,
+      name: "Fifth Item",
+      description: "This is a second description",
+      cost: 1.99,
+      featured: false,
+      onHand: 20,
+      keywords: ["car", "engine"],
+      category: "televisions",
+      photos: [
+        "http://placekitten.com/200/205",
+        "http://placekitten.com/200/199",
+        "http://placekitten.com/200/111",
+      ],
+      reviews: ["reviewId"],
+    }
   ];
   //Filters based off Active or Not.
   const filterResults = dummyDatabase.filter(function (dummy) {
@@ -57,11 +111,16 @@ const Listings = () => {
     <div>
       <h1>Welcome to The Shop Listings:</h1>
       <div className="results">
+      <CardColumns>
         {filterResults?.map((item, index) => {
           return (
             
-            <div className="listing" key={index}>
-              <img src={item.photos[0]} alt={item.name}></img>  
+            <Card
+            style={{ width: '18rem' }}
+            className="mb-2">
+            <Card.Img variant="top" src={item.photos[0]} />
+            <Card.Body>
+              <Card.Text>
               <h2><b>Product:</b> {item.name}</h2>
               <h4><b>Price:</b> ${item.cost}</h4>
               <li><b>Description:</b> {item.description}</li>
@@ -74,10 +133,13 @@ const Listings = () => {
                   Add to Cart
                 </button>
               </form>
-              <hr></hr>
-            </div>
+              </Card.Text>
+            </Card.Body>
+          </Card>
+         
           );
         })}
+        </CardColumns>
       </div>
     </div>
   );

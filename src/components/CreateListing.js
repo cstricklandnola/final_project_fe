@@ -69,24 +69,13 @@ const CreateListing = (props) => {
           required
           onChange={(e) => setListingData({ ...listingData, onHand: e.target.value })}
         />
-        <label>Photos #1:</label>
+        <label>Photos:</label>
         <input
           name="Photos"
           required
           onChange={(e) => setListingData({ ...listingData, photos1: e.target.value })}
         />
-        <label>Photos #2:</label>
-        <input
-          name="Photos"
-          required
-          onChange={(e) => setListingData({ ...listingData, photos2: e.target.value })}
-        />
-        <label>Photos #3:</label>
-        <input
-          name="Photos"
-          required
-          onChange={(e) => setListingData({ ...listingData, photos3: e.target.value })}
-        />
+        
         <label>Featured:</label>
         <input
           name="Password"

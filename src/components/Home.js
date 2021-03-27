@@ -1,3 +1,8 @@
+import Carousel from 'react-bootstrap/Carousel'
+import Card from 'react-bootstrap/Card'
+import 'bootstrap/dist/css/bootstrap.min.css';
+import React, { useState } from 'react'
+
 const handleSubmitAddToCart = async (item) => {
     try {
       alert("ItemId: "+ item.itemId + " was added to the cart.");
@@ -31,7 +36,7 @@ const Home = () => {
           name: "Second Item",
           description: "This is a second description",
           cost: 1.99,
-          featured: false,
+          featured: true,
           onHand: 20,
           keywords: ["car", "engine"],
           category: "televisions",
@@ -50,31 +55,45 @@ const Home = () => {
     <div>
       <h1>Welcome to The Shop: </h1>
          <h2>Featured Listings:</h2>
-      <div className="results">
+         <div className= "limit">
+         <Carousel>
         {filterResults?.map((item, index) => {
           return (
-            
-            <div className="listing" key={index}>
-              <img src={item.photos[0]} alt={item.name}></img>  
-              <h2><b>Product:</b> {item.name}</h2>
-              <h4><b>Price:</b> ${item.cost}</h4>
-              <form>
-                <button
+            <Carousel.Item interval={1000}>
+              <img
+              className="d-block w-100"
+              src={item.photos[0]}
+              alt="First slide"
+              width="300" height="200"
+              
+            />
+            <Carousel.Caption>
+          <h3><b>Product:</b> {item.name}</h3>
+           <p><b>Price:</b> ${item.cost}</p>
+           <button
                   type="button"
                   onClick={() => handleSubmitAddToCart(item)}
                 >
                   Add to Cart
                 </button>
-              </form>
-              <hr></hr>
-            </div>
+          </Carousel.Caption>
+          </Carousel.Item>
+              
+            
           );
         })}
+      </Carousel>
       </div>
+
+      
     </div>)
 
 
 }
+
+
+
+
 
 export default Home
 
