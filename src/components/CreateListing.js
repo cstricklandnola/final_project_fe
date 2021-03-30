@@ -3,7 +3,11 @@ import {Redirect} from "react-router-dom"
 import Button from 'react-bootstrap/Button'
 const CreateListing = (props) => {
   const [listingData, setListingData] = useState("");
-
+  const {admin} = props
+  
+  // if(!admin){
+  //   return <Redirect to="/" />}
+  
   //const { setAuthorized, loggedIn, setLoggedIn } = props;
     const loggedIn = true
 

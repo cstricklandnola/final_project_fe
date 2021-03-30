@@ -10,7 +10,7 @@ const Login = (props) => {
   function helperHandleSubmit(e) {
     setUser({ ...user, password: e.target.value });
     setCurrentUser(user.username);
-    /* console.log(currentUser); */
+    
   }
 
   

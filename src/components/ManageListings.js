@@ -21,7 +21,12 @@ const HandleSubmitDeleteItem = async (item) => {
     }
   };
 
-const ManageListings = () => {
+const ManageListings = (props) => {
+    const {admin} = props
+    // console.log (admin)
+    // if(!admin){
+    //   return <Redirect to="/" />}
+
     const dummyDatabase = [
         {
           itemId: 1,
@@ -112,8 +117,8 @@ const ManageListings = () => {
       //Filters based off Active or Not.
       const filterResults = dummyDatabase.filter(function (dummy) {
         return dummy.isActive === true;})
-
-
+    
+      
     return (
         <div>
           <h1>Edit Listings:</h1>

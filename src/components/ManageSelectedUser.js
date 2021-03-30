@@ -3,8 +3,8 @@ import { storeToken } from "../auth";
 import { Redirect } from "react-router-dom";
 import Card from "react-bootstrap/Card";
 import { CardColumns } from "react-bootstrap";
-import Modal from 'react-bootstrap/Modal'
-import Button from 'react-bootstrap/Button';
+
+
 
 
 const dummyUserDataBase = [
@@ -120,9 +120,11 @@ const dummyUserDataBase = [
   },
 ];
 
-const handleModifyUser = async (user) => {
+const handleModifyUser = async (evt, user) => {
   try {
-    alert("UserName: " + user.username + " was modified");
+    evt.preventDefault()
+    console.log(user);
+    
   } catch (error) {
     console.error(error);
   }
@@ -152,74 +154,41 @@ const handlePreviousOrders = async (user) => {
 
 
 
-const ManageUsers = (props) => {
-  const [selectedUser, setSelectedUser] = useState("");
-  const [filteredUser, setFilteredUser] = useState("");
-  const {admin} = props
+const ManageSelectedUser = (props) => {
+  const {selectedUser,admin} = props
+  console.log (admin)
+//   if(!admin){
+//     return <Redirect to="/" />}
   
-  // if(!admin){
-  //   return <Redirect to="/" />}
   
+
   //Filters based off Active or Not.
   const filterResults2 = dummyUserDataBase.filter(function (dummy) {
     return dummy.isActive === true;
   });
-
+  console.log(selectedUser.currentOrder) 
   return (
     <div>
-      <h1>Welcome to The User Database:</h1>
+      <h1>Welcome to The Modify User Page:</h1>
+      {selectedUser.username}
+      <li>userId: {selectedUser.userId}</li>
+      <li>isActive: {selectedUser.isActive}</li>
+      <li>name: {selectedUser.name}</li>
+      <li>email: {selectedUser.email},</li>
+      <li>password: Reset Password Button </li>
+                 
+
+           
+      
     
-      <div className="results">
-        {filteredUser.username}
-
-        <div className="users">
-          <CardColumns>
-            {filterResults2?.map((user, index) => {
-              return (
-                <Card style={{ width: "18rem" }} className="mb-2">
-                  <Card.Body>
-                    <Card.Text>
-                    <li>
-                        <b>UserId:</b> {user.userId}
-                    </li>
-                    <li>
-                        <b>Username:</b> {user.username}
-                        </li>
-                      <li>
-                        <b>Email:</b> {user.email}
-                      </li>
-                      <li>
-                        <b>IsActive:</b> {user.isActive}
-                      </li>
-                      <li>
-                        <b>Previous Orders:</b>{user.uniqueOrderId}
-                      </li>
-
-                      <form>
-                        <Button
-                          type="button"
-                          onClick={() => handleModifyUser(user)}
-                        >
-                          Modify User
-                        </Button>
-                      </form>
-                      <Button
-                        type="button"
-                        variant="secondary"
-                        onClick={() => handlePreviousOrders(user)}
-                      >
-                        See Previous Orders
-                      </Button>
-                    </Card.Text>
-                  </Card.Body>
-                </Card>
-              );
-            })}
-          </CardColumns>
-        </div>
-      </div>
+      
     </div>
   );
 };
 
-export default ManageUsers;
+
+
+
+
+
+export default ManageSelectedUser;
