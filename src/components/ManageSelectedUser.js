@@ -156,7 +156,7 @@ const handlePreviousOrders = async (user) => {
 
 const ManageSelectedUser = (props) => {
   const {selectedUser,admin} = props
-  console.log (admin)
+  console.log (props)
 //   if(!admin){
 //     return <Redirect to="/" />}
   
@@ -166,7 +166,7 @@ const ManageSelectedUser = (props) => {
   const filterResults2 = dummyUserDataBase.filter(function (dummy) {
     return dummy.isActive === true;
   });
-  console.log(selectedUser.currentOrder) 
+  
   return (
     <div>
       <h1>Welcome to The Modify User Page:</h1>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { storeToken } from "../auth";
-import { Redirect } from "react-router-dom";
+import {Link} from "react-router-dom"
 import Card from "react-bootstrap/Card";
 import { CardColumns } from "react-bootstrap";
 import Modal from 'react-bootstrap/Modal'
@@ -120,13 +120,7 @@ const dummyUserDataBase = [
   },
 ];
 
-const handleModifyUser = async (user) => {
-  try {
-    alert("UserName: " + user.username + " was modified");
-  } catch (error) {
-    console.error(error);
-  }
-};
+
 
 // const handleSelectUser = async (value, setSelectedUser, selectedUser) => {
 //   try {
@@ -153,17 +147,26 @@ const handlePreviousOrders = async (user) => {
 
 
 const ManageUsers = (props) => {
-  const [selectedUser, setSelectedUser] = useState("");
+  const {selectedUser, setSelectedUser} = props
   const [filteredUser, setFilteredUser] = useState("");
+  
   const {admin} = props
   
   // if(!admin){
   //   return <Redirect to="/" />}
-  
+
   //Filters based off Active or Not.
   const filterResults2 = dummyUserDataBase.filter(function (dummy) {
     return dummy.isActive === true;
   });
+
+  const handleModifyUser = async (user) => {
+    try {
+      alert("UserName: " + user.username + " was modified");
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <div>
@@ -195,14 +198,14 @@ const ManageUsers = (props) => {
                         <b>Previous Orders:</b>{user.uniqueOrderId}
                       </li>
 
-                      <form>
+                      <Link to="/ManageSelectedUser">
                         <Button
                           type="button"
-                          onClick={() => handleModifyUser(user)}
+                          onClick={() => setSelectedUser(user)}
                         >
                           Modify User
                         </Button>
-                      </form>
+                        </Link>
                       <Button
                         type="button"
                         variant="secondary"

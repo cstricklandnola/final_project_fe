@@ -28,6 +28,7 @@ const App = () => {
   const [currentUser, setCurrentUser] = useState("");
   const [loggedIn, setLoggedIn] = useState(getToken());
   const [admin, setAdmin] = useState(false);
+  const [selectedUser, setSelectedUser] = useState("");
   
   
   //Temp variable settings
@@ -99,6 +100,8 @@ const App = () => {
                 setAuthorized={setAuthorized}
                 authorized={authorized}
                 admin = {admin}
+                selectedUser = {selectedUser}
+                setSelectedUser = {setSelectedUser}
               />
           </Route>
           <Route path='/Login'>
@@ -157,6 +160,7 @@ const App = () => {
              loggedIn={loggedIn}
              setLoggedIn={setLoggedIn}
              admin = {admin}
+             selectedUser = {selectedUser}
              /> 
           </Route>
          
