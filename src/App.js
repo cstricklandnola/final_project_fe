@@ -29,6 +29,7 @@ const App = () => {
   const [loggedIn, setLoggedIn] = useState(getToken());
   const [admin, setAdmin] = useState(false);
   const [selectedUser, setSelectedUser] = useState("");
+  const [orderStarted, setOrderStarted] = useState("")
   
   
   //Temp variable settings
@@ -90,7 +91,13 @@ const App = () => {
       <main>
         <Switch>
           <Route exact path= '/'>
-            <Home />
+            <Home 
+            setAuthorized={setAuthorized} 
+            loggedIn={loggedIn}
+            setLoggedIn={setLoggedIn}
+            admin = {admin}
+            orderStarted = {orderStarted}
+            setOrderStarted = {setOrderStarted}/>
           </Route>
           <Route path='/ManageUsers'>
               <ManageUsers
@@ -127,6 +134,8 @@ const App = () => {
              loggedIn={loggedIn}
              setLoggedIn={setLoggedIn}
              admin = {admin}
+             orderStarted = {orderStarted}
+             setOrderStarted = {setOrderStarted}
              /> 
           </Route>
           <Route path='/CreateListing'>

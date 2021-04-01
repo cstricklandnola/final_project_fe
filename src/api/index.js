@@ -4,6 +4,8 @@ const token = "I can't believe it."
 
 const baseURL = "notmadeyet";
 
+//This code is all from the Fitness Tracker we did. Most of it can just be modified as necessary for the new API routes.
+
 export const fetchUserData = async () => {
   try {
     const response = await fetch(`${baseURL}users/me`, {

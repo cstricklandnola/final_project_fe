@@ -14,6 +14,7 @@ const handleSubmitRemoveFromCart = async (item) => {
 };
 
 const ShoppingCart = () => {
+  //||****************************************************||Delete whatever is contained in this ****************************************************||
   const dummyDatabase = [
     {
       itemId: 1,
@@ -112,14 +113,16 @@ const ShoppingCart = () => {
             count: 4},
         ]
       }
-
-
+//**************************************************** Delete whatever is contained in this ****************************************************||
+  
   
   //Filters based off Active or Not.
   const filterResults = dummyDatabase.filter(function (dummy) {
     return dummy.isActive === true;})
 console.log(currentOrder)
-console.log(currentOrder.items)
+
+
+
  
     
 
@@ -127,8 +130,12 @@ console.log(currentOrder.items)
     <div>
       <h1>Welcome to Your Shopping Cart:</h1>
       <div className="results">
-      
-      Has not been worked on.
+      {currentOrder.order.map((item) => (
+        <li>Item: {item.itemId} Count: {item.count}</li>
+
+       
+    ))}
+     
                
       </div>
     </div>

@@ -26,7 +26,7 @@ const ManageListings = (props) => {
     // console.log (admin)
     // if(!admin){
     //   return <Redirect to="/" />}
-
+//||****************************************************||Delete whatever is contained in this ****************************************************||
     const dummyDatabase = [
         {
           itemId: 1,
@@ -114,6 +114,7 @@ const ManageListings = (props) => {
           reviews: ["reviewId"],
         }
       ];
+      //**************************************************** Delete whatever is contained in this ****************************************************||
       //Filters based off Active or Not.
       const filterResults = dummyDatabase.filter(function (dummy) {
         return dummy.isActive === true;})
@@ -122,6 +123,7 @@ const ManageListings = (props) => {
     return (
         <div>
           <h1>Edit Listings:</h1>
+          
           <div className="results">
           <CardColumns>
             {filterResults?.map((item, index) => {

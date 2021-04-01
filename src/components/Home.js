@@ -4,15 +4,27 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { useState } from 'react'
 import Button from 'react-bootstrap/Button'
 
-const handleSubmitAddToCart = async (item) => {
+
+
+
+const Home = (props) => {
+
+  const {orderStarted, setOrderStarted} = props
+  
+  const handleSubmitAddToCart = async (item) => {
     try {
-      alert("ItemId: "+ item.itemId + " was added to the cart.");
+      //Check state to see if an order has been started. If it hasn't been, start a new order. If it has been, add item.
+      if (orderStarted) {
+      alert("ItemId: "+ item.itemId + " was added to the cart.")}
+      else {
+        
+        alert("ItemId: "+ item.itemId + " was added to a NEW cart!")
+        setOrderStarted(true)}
     } catch (error) {
       console.error(error);
     }
   };
-
-const Home = () => {
+  //||**************************************************** Delete whatever is contained in this ****************************************************||
     const dummyDatabase = [
         {
           itemId: 1,
@@ -49,6 +61,7 @@ const Home = () => {
           reviews: ["reviewId"],
         },
       ];
+      //||**************************************************** Delete whatever is contained in this ****************************************************||
     const filterResults = dummyDatabase.filter(function (dummy) {
         return dummy.isActive === true && dummy.featured === true;})
 

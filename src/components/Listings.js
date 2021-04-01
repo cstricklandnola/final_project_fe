@@ -5,15 +5,27 @@ import { storeToken } from "../auth";
 import {Redirect} from "react-router-dom"
 import { CardColumns } from "react-bootstrap";
 
-const handleSubmitAddToCart = async (item) => {
-  try {
-    alert("ItemId: "+ item.itemId + " was added to the cart.");
-  } catch (error) {
-    console.error(error);
-  }
-};
 
-const Listings = () => {
+const Listings = (props) => {
+
+  const {orderStarted, setOrderStarted} = props
+  const [searchItem, setSearchItem] = useState("")
+  console.log (orderStarted)
+
+  const handleSubmitAddToCart = async (item) => {
+    try {
+      //Check state to see if an order has been started. If it hasn't been, start a new order. If it has been, add item.
+      if (orderStarted) {
+      alert("ItemId: "+ item.itemId + " was added to the cart.")}
+      else {
+        alert("ItemId: "+ item.itemId + " was added to a NEW cart!")
+        setOrderStarted(true)}
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  //||**************************************************** Delete whatever is contained in this ****************************************************||
   const dummyDatabase = [
     {
       itemId: 1,
@@ -101,18 +113,54 @@ const Listings = () => {
       reviews: ["reviewId"],
     }
   ];
+  //||****************************************************Delete whatever is contained in this ****************************************************||
   //Filters based off Active or Not.
-  const filterResults = dummyDatabase.filter(function (dummy) {
-    return dummy.isActive === true;})
 
-    console.log (filterResults)
+
+  // This needs to have an nested filter checks for item cost, name, and artist.
+
+  let filterResults2 = dummyDatabase.filter(function (dummy) {
+    return dummy.cost < searchItem.cost;})
+
+  const filterResults = () => {
+    //This filters our results! Name -> Cost.
+    let dummydatabase2 = dummyDatabase
+    console.log (searchItem.name)
+    if (searchItem.name){
+      dummydatabase2 = dummydatabase2.filter(function (dummy) {
+        return dummy.name.toLowerCase().includes( searchItem.name.toLowerCase());})
+        }
+        
+    if (searchItem.cost){
+    dummydatabase2 = dummydatabase2.filter(function (dummy) {
+      return dummy.cost < searchItem.cost;})
+      }
+    return dummydatabase2}
+
+
+
+
+  
 
   return (
     <div>
       <h1>Welcome to The Shop Listings:</h1>
+      <label>Search:</label>
+      <input
+          type="text"
+          
+          onChange={(e) => setSearchItem({...searchItem, name: e.target.value})}
+        />
+        <label>Cost:</label>
+      
+    
+        <input type="range" min="1" max="100"
+      onChange={(e) => setSearchItem({...searchItem, cost: e.target.value})}/>
+
       <div className="results">
+        
       <CardColumns>
-        {filterResults?.map((item, index) => {
+        {filterResults()?.map((item, index) => {
           return (
             
             <Card

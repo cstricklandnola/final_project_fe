@@ -6,7 +6,7 @@ import { CardColumns } from "react-bootstrap";
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button';
 
-
+//||**************************************************** Delete whatever is contained in this ****************************************************||
 const dummyUserDataBase = [
   {
     userId: 1,
@@ -119,7 +119,7 @@ const dummyUserDataBase = [
     ],
   },
 ];
-
+// **************************************************** Delete whatever is contained in this ****************************************************||
 
 
 // const handleSelectUser = async (value, setSelectedUser, selectedUser) => {
@@ -149,6 +149,7 @@ const handlePreviousOrders = async (user) => {
 const ManageUsers = (props) => {
   const {selectedUser, setSelectedUser} = props
   const [filteredUser, setFilteredUser] = useState("");
+  const [filteredUserList, setFilteredUserList] = useState("");
   
   const {admin} = props
   
@@ -159,6 +160,21 @@ const ManageUsers = (props) => {
   const filterResults2 = dummyUserDataBase.filter(function (dummy) {
     return dummy.isActive === true;
   });
+
+  const filterResults = () => {
+    //This filters our results! Name -> Cost.
+    let dummydatabase2 = dummyUserDataBase
+    console.log (filteredUserList.username)
+    if (filteredUserList.username){
+      dummydatabase2 = dummydatabase2.filter(function (dummy) {
+        return dummy.username.toLowerCase().includes( filteredUserList.username.toLowerCase());})
+        }
+        
+    if (filteredUserList.email){
+    dummydatabase2 = dummydatabase2.filter(function (dummy) {
+      return dummy.email.includes(  filteredUserList.email.toLowerCase());})
+      }
+    return dummydatabase2}
 
   const handleModifyUser = async (user) => {
     try {
@@ -171,13 +187,26 @@ const ManageUsers = (props) => {
   return (
     <div>
       <h1>Welcome to The User Database:</h1>
+      <label>Username Search:</label>
+      <input
+          type="text"
+          
+          onChange={(e) => setFilteredUserList({...filteredUserList, username: e.target.value})}
+        />
+      <label>E-Mail Search:</label>
+    <input
+          type="text"
+          
+          onChange={(e) => setFilteredUserList({...filteredUserList, email: e.target.value})}
+        />
+        
     
       <div className="results">
         {filteredUser.username}
 
         <div className="users">
           <CardColumns>
-            {filterResults2?.map((user, index) => {
+            {filterResults()?.map((user, index) => {
               return (
                 <Card style={{ width: "18rem" }} className="mb-2">
                   <Card.Body>

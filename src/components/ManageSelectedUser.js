@@ -6,7 +6,7 @@ import { CardColumns } from "react-bootstrap";
 
 
 
-
+//||****************************************************||Delete whatever is contained in this ****************************************************||
 const dummyUserDataBase = [
   {
     userId: 1,
@@ -119,40 +119,7 @@ const dummyUserDataBase = [
     ],
   },
 ];
-
-const handleModifyUser = async (evt, user) => {
-  try {
-    evt.preventDefault()
-    console.log(user);
-    
-  } catch (error) {
-    console.error(error);
-  }
-};
-
-// const handleSelectUser = async (value, setSelectedUser, selectedUser) => {
-//   try {
-//     const filterResults2 = dummyUserDataBase.filter(function (dummy) {
-//       return dummy.username === value;
-//     });
-//     setSelectedUser(...filterResults2);
-//     console.log(selectedUser);
-//   } catch (error) {
-//     console.error(error);
-//   }
-// };
-
-const handlePreviousOrders = async (user) => {
-  try {
-    console.log(user.previousOrders);
-  } catch (error) {
-    console.error(error);
-  }
-};
-
-
-
-
+//**************************************************** Delete whatever is contained in this ****************************************************||
 
 const ManageSelectedUser = (props) => {
   const {selectedUser,admin} = props
@@ -161,11 +128,9 @@ const ManageSelectedUser = (props) => {
 //     return <Redirect to="/" />}
   
   
-
-  //Filters based off Active or Not.
-  const filterResults2 = dummyUserDataBase.filter(function (dummy) {
-    return dummy.isActive === true;
-  });
+// This needs to be changed to where the state loads into text boxes so that they can be editted.
+  
+  
   
   return (
     <div>
