@@ -3,19 +3,37 @@ import React, {useState, useEffect} from 'react';
 import { BrowserRouter as Router, Link, Switch, Route} from "react-router-dom"
 import {getToken, clearToken} from "./auth"
 import{fetchUserData, fetchAllActivites} from "./api"
+import Navbar from 'react-bootstrap/Navbar'
+import Nav from 'react-bootstrap/Nav'
+import Button from 'react-bootstrap/Button'
+import Form from 'react-bootstrap/Form'
+import FormControl from 'react-bootstrap/Form'
+import NavDropdown from 'react-bootstrap/NavDropdown'
+
+
 import {
   Login,
-  Register,
+  CreateListing,
   Home,
   Listings,
-  CreateListing,
-  ManageUsers
+  ManageUsers,
+  ManageListings,
+  ManageSelectedUser,
+  ManageSelectedListing,
+  OrdersListing,
+  Register,
+  ShoppingCart
 } from "./components"
 
 const App = () => {
   const [authorized, setAuthorized] = useState(false);
   const [currentUser, setCurrentUser] = useState("");
   const [loggedIn, setLoggedIn] = useState(getToken());
+  const [admin, setAdmin] = useState(false);
+  const [selectedUser, setSelectedUser] = useState("");
+  const [selectedListing, setSelectedListing] = useState("");
+  const [orderStarted, setOrderStarted] = useState("")
+  
   
   //Temp variable settings
   
@@ -42,15 +60,27 @@ const App = () => {
 
   return (
     <Router>
-      <nav className="navBar">
-        <h1>Spend Money!</h1>
-        <div>
-          <Link className="Link" to= '/ManageUsers'>Manage Users</Link>
-          <Link className="Link" to= '/CreateListing'>Create Listings</Link>
-          <Link className="Link" to= '/Listings'>Listings</Link>
-          {/* !authorized  */ !loggedIn ? (<Link className="Link" to= '/Login'>Login</Link>) : null}
-          {/* !authorized  */ !loggedIn ? (<Link className="Link" to= '/Register'>Sign Up</Link>) : null}
-          {loggedIn ? <Link className="Link" onClick={() => {
+      <Navbar bg="light" expand="lg">
+  <Navbar.Brand href="/">Shopping</Navbar.Brand>
+  <Navbar.Toggle aria-controls="basic-navbar-nav" />
+  <Navbar.Collapse id="basic-navbar-nav">
+    <Nav className="mr-auto">
+      
+      <Nav.Link href="/listings">Listings</Nav.Link>
+      {!admin ? (<NavDropdown title="Admin" id="basic-nav-dropdown">
+        <NavDropdown.Item href="/ManageUsers">Manage Users</NavDropdown.Item>
+        <NavDropdown.Item href="/ManageListings">Manage Listing</NavDropdown.Item>
+        <NavDropdown.Item href="/CreateListing">Create Listing</NavDropdown.Item>
+        <NavDropdown.Item href="/OrdersListing">View Orders</NavDropdown.Item>
+      </NavDropdown>) : null}
+      <Nav.Link href="/ShoppingCart">Shopping Cart</Nav.Link>
+    </Nav>
+    
+    <Form inline>
+    
+    {!loggedIn ? (<Nav.Link href='/Login'>Login</Nav.Link>) : null}
+    {!loggedIn ? (<Nav.Link href="/Register" to= '/Register'>Register</Nav.Link>) : null}
+    {loggedIn ? <Link className="Link" onClick={() => {
                         clearToken();
                         
                         setLoggedIn(null);
@@ -58,12 +88,20 @@ const App = () => {
                         setCurrentUser(null)
                     }}
                         to='/'>Log Out</Link> : null}
-        </div>
-      </nav>
+    
+    </Form>
+  </Navbar.Collapse>
+</Navbar>
       <main>
         <Switch>
           <Route exact path= '/'>
-            <Home />
+            <Home 
+            setAuthorized={setAuthorized} 
+            loggedIn={loggedIn}
+            setLoggedIn={setLoggedIn}
+            admin = {admin}
+            orderStarted = {orderStarted}
+            setOrderStarted = {setOrderStarted}/>
           </Route>
           <Route path='/ManageUsers'>
               <ManageUsers
@@ -72,6 +110,9 @@ const App = () => {
                 setCurrentUser={setCurrentUser}
                 setAuthorized={setAuthorized}
                 authorized={authorized}
+                admin = {admin}
+                selectedUser = {selectedUser}
+                setSelectedUser = {setSelectedUser}
               />
           </Route>
           <Route path='/Login'>
@@ -81,6 +122,7 @@ const App = () => {
                 setCurrentUser={setCurrentUser}
                 setAuthorized={setAuthorized}
                 authorized={authorized}
+                setAdmin = {setAdmin}
               />
           </Route>
           <Route path='/Register'>
@@ -95,6 +137,9 @@ const App = () => {
              setAuthorized={setAuthorized} 
              loggedIn={loggedIn}
              setLoggedIn={setLoggedIn}
+             admin = {admin}
+             orderStarted = {orderStarted}
+             setOrderStarted = {setOrderStarted}
              /> 
           </Route>
           <Route path='/CreateListing'>
@@ -102,6 +147,56 @@ const App = () => {
              setAuthorized={setAuthorized} 
              loggedIn={loggedIn}
              setLoggedIn={setLoggedIn}
+             admin = {admin}
+             /> 
+          </Route>
+          <Route path='/ShoppingCart'>
+             <ShoppingCart
+             setAuthorized={setAuthorized} 
+             loggedIn={loggedIn}
+             setLoggedIn={setLoggedIn}
+             
+             /> 
+          </Route>
+          <Route path='/ManageListings'>
+             <ManageListings
+             setAuthorized={setAuthorized} 
+             loggedIn={loggedIn}
+             setLoggedIn={setLoggedIn}
+             admin = {admin}
+             selectedListing = {selectedListing}
+             setSelectedListing = {setSelectedListing}
+             /> 
+          </Route>
+          
+          <Route path='/ManageSelectedUser'>
+             <ManageSelectedUser
+             setAuthorized={setAuthorized} 
+             loggedIn={loggedIn}
+             setLoggedIn={setLoggedIn}
+             admin = {admin}
+             selectedUser = {selectedUser}
+             /> 
+          </Route>
+          <Route path='/ManageSelectedListing'>
+             <ManageSelectedListing
+             setAuthorized={setAuthorized} 
+             loggedIn={loggedIn}
+             setLoggedIn={setLoggedIn}
+             admin = {admin}
+             selectedListing = {selectedListing}
+             
+             /> 
+          </Route>
+
+          <Route path='/OrdersListing'>
+             <OrdersListing
+             setAuthorized={setAuthorized} 
+             loggedIn={loggedIn}
+             setLoggedIn={setLoggedIn}
+             admin = {admin}
+             
+             
              /> 
           </Route>
          
@@ -112,3 +207,5 @@ const App = () => {
 }
 
 export default App;
+
+

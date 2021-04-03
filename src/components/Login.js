@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { storeToken } from "../auth";
 import {Redirect} from "react-router-dom"
+import Button from 'react-bootstrap/Button'
 
 const Login = (props) => {
   const [user, setUser] = useState("");
@@ -9,7 +10,7 @@ const Login = (props) => {
   function helperHandleSubmit(e) {
     setUser({ ...user, password: e.target.value });
     setCurrentUser(user.username);
-    /* console.log(currentUser); */
+    
   }
 
   
@@ -54,7 +55,7 @@ const Login = (props) => {
         />
         <label>Password:</label>
         <input type="password" required onChange={(e) => helperHandleSubmit(e)} />
-        <button type="submit">submit</button>
+        <Button type="submit">submit</Button>
       </form>
     );
   }
