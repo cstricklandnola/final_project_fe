@@ -98,7 +98,8 @@ const dummyDatabase = [
 const ManageSelectedListing = (props) => {
   const { selectedListing, admin } = props;
   const [listingPayload, setListingPayload] = useState({});
-
+  // if(!admin){
+  //   return <Redirect to="/" />}
   const handleCommitChanges = async () => {
     try {
       //This creates the final Payload to send to the Patch for Item.

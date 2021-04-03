@@ -8,6 +8,7 @@ import { CardColumns } from "react-bootstrap";
 const Listings = (props) => {
   const { orderStarted, setOrderStarted } = props;
   const [searchItem, setSearchItem] = useState("");
+  
   console.log(orderStarted);
 
   const handleSubmitAddToCart = async (item) => {

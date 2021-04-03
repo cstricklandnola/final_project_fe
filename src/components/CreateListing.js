@@ -15,10 +15,7 @@ const CreateListing = (props) => {
 
     // We will be using State to hold the values for the form of sending the Create Listing.
     evt.preventDefault();
-    console.log (listingData.name)
-    console.log (listingData.cost)
-    console.log (listingData.photos1)
-    console.log (listingData.photos2)
+    
     
 
     // fetch(

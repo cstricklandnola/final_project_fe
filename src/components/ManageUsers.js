@@ -11,6 +11,7 @@ const dummyUserDataBase = [
   {
     userId: 1,
     isActive: true,
+    isAdmin: true,
     username: "JohnSmith99",
     name: "John Smith",
     email: "a@a.com",
@@ -46,6 +47,7 @@ const dummyUserDataBase = [
   {
     userId: 2,
     isActive: true,
+    isAdmin: false,
     username: "AnnaJoe",
     name: "Anna Joe",
     email: "b@b.com",
@@ -81,6 +83,7 @@ const dummyUserDataBase = [
   {
     userId: 3,
     isActive: true,
+    isAdmin: false,
     username: "BillyBob11",
     name: "Billy Bob",
     email: "c@c.com",
