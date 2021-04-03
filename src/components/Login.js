@@ -55,7 +55,7 @@ const Login = (props) => {
         />
         <label>Password:</label>
         <input type="password" required onChange={(e) => helperHandleSubmit(e)} />
-        <button type="submit">submit</button>
+        <Button type="submit">submit</Button>
       </form>
     );
   }

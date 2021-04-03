@@ -4,6 +4,7 @@ import CardGroup from 'react-bootstrap/CardGroup'
 import { storeToken } from "../auth";
 import {Redirect} from "react-router-dom"
 import { CardColumns } from "react-bootstrap";
+import Button from 'react-bootstrap/Button';
 
 const handleSubmitRemoveFromCart = async (item) => {
   try {
@@ -122,20 +123,16 @@ const ShoppingCart = () => {
   //Filters based off Active or Not.
   const filterResults = dummyDatabase.filter(function (dummy) {
     return dummy.isActive === true;})
-
-  
-
-
-
  
     
 
   return (
     <div>
       <h1>Welcome to Your Shopping Cart:</h1>
+      <h3>This is waiting for the back end to be finished to be fancy.</h3>
       <div className="results">
       {currentOrder.order.map((item) => (
-        <li>Item: {item.itemId} Count: {item.count}</li>
+        <li>Item: {item.itemId} Count: {item.count} <Button type="submit" onClick={() => handleSubmitRemoveFromCart(item)}>Remove Item</Button></li> 
 
        
     ))}

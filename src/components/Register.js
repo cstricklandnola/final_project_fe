@@ -58,7 +58,7 @@ const Register = (props) => {
           required
           onChange={(e) => setUser({ ...user, password: e.target.value })}
         />
-        <button type="submit">submit</button>
+        <Button type="submit">submit</Button>
       </form>
     );
   }    

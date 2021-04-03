@@ -13,15 +13,16 @@ import NavDropdown from 'react-bootstrap/NavDropdown'
 
 import {
   Login,
-  Register,
+  CreateListing,
   Home,
   Listings,
-  CreateListing,
   ManageUsers,
   ManageListings,
-  ShoppingCart,
   ManageSelectedUser,
-  ManageSelectedListing
+  ManageSelectedListing,
+  OrdersListing,
+  Register,
+  ShoppingCart
 } from "./components"
 
 const App = () => {
@@ -70,6 +71,7 @@ const App = () => {
         <NavDropdown.Item href="/ManageUsers">Manage Users</NavDropdown.Item>
         <NavDropdown.Item href="/ManageListings">Manage Listing</NavDropdown.Item>
         <NavDropdown.Item href="/CreateListing">Create Listing</NavDropdown.Item>
+        <NavDropdown.Item href="/OrdersListing">View Orders</NavDropdown.Item>
       </NavDropdown>) : null}
       <Nav.Link href="/ShoppingCart">Shopping Cart</Nav.Link>
     </Nav>
@@ -183,6 +185,17 @@ const App = () => {
              setLoggedIn={setLoggedIn}
              admin = {admin}
              selectedListing = {selectedListing}
+             
+             /> 
+          </Route>
+
+          <Route path='/OrdersListing'>
+             <OrdersListing
+             setAuthorized={setAuthorized} 
+             loggedIn={loggedIn}
+             setLoggedIn={setLoggedIn}
+             admin = {admin}
+             
              
              /> 
           </Route>
