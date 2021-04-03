@@ -124,18 +124,19 @@ const Listings = (props) => {
 
   const filterResults = () => {
     //This filters our results! Name -> Cost.
-    let dummydatabase2 = dummyDatabase
+    //We could use this to filter off one search bar, and have it progress down each possible data source.
+    let resultsFilter = dummyDatabase
     console.log (searchItem.name)
     if (searchItem.name){
-      dummydatabase2 = dummydatabase2.filter(function (dummy) {
+      resultsFilter = resultsFilter.filter(function (dummy) {
         return dummy.name.toLowerCase().includes( searchItem.name.toLowerCase());})
         }
         
     if (searchItem.cost){
-    dummydatabase2 = dummydatabase2.filter(function (dummy) {
+      resultsFilter = resultsFilter.filter(function (dummy) {
       return dummy.cost < searchItem.cost;})
       }
-    return dummydatabase2}
+    return resultsFilter}
 
 
 

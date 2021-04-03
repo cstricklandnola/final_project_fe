@@ -4,6 +4,7 @@ import { storeToken } from "../auth";
 import {Redirect} from "react-router-dom"
 import { CardColumns } from "react-bootstrap";
 import Button from 'react-bootstrap/Button'
+import {Link} from "react-router-dom"
 
 const handleSubmitEditItem = async (item) => {
   try {
@@ -23,6 +24,7 @@ const HandleSubmitDeleteItem = async (item) => {
 
 const ManageListings = (props) => {
     const {admin} = props
+    const {selectedListing, setSelectedListing} = props
     // console.log (admin)
     // if(!admin){
     //   return <Redirect to="/" />}
@@ -140,12 +142,14 @@ const ManageListings = (props) => {
                   <li><b>Description:</b> {item.description}</li>
                   <li><b>Reviews:</b> {item.reviews}</li>
                   
-                    <Button
-                      type="button"
-                      onClick={() => handleSubmitEditItem(item)}
-                    >
-                      Edit
-                    </Button>
+                  <Link to="/ManageSelectedListing">
+                        <Button
+                          type="button"
+                          onClick={() => setSelectedListing(item)}
+                        >
+                          Modify Listing
+                        </Button>
+                        </Link>
 
                     <Button
                       type="button"

@@ -20,7 +20,8 @@ import {
   ManageUsers,
   ManageListings,
   ShoppingCart,
-  ManageSelectedUser
+  ManageSelectedUser,
+  ManageSelectedListing
 } from "./components"
 
 const App = () => {
@@ -29,6 +30,7 @@ const App = () => {
   const [loggedIn, setLoggedIn] = useState(getToken());
   const [admin, setAdmin] = useState(false);
   const [selectedUser, setSelectedUser] = useState("");
+  const [selectedListing, setSelectedListing] = useState("");
   const [orderStarted, setOrderStarted] = useState("")
   
   
@@ -160,6 +162,8 @@ const App = () => {
              loggedIn={loggedIn}
              setLoggedIn={setLoggedIn}
              admin = {admin}
+             selectedListing = {selectedListing}
+             setSelectedListing = {setSelectedListing}
              /> 
           </Route>
           
@@ -170,6 +174,16 @@ const App = () => {
              setLoggedIn={setLoggedIn}
              admin = {admin}
              selectedUser = {selectedUser}
+             /> 
+          </Route>
+          <Route path='/ManageSelectedListing'>
+             <ManageSelectedListing
+             setAuthorized={setAuthorized} 
+             loggedIn={loggedIn}
+             setLoggedIn={setLoggedIn}
+             admin = {admin}
+             selectedListing = {selectedListing}
+             
              /> 
           </Route>
          

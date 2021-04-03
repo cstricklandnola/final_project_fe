@@ -163,26 +163,20 @@ const ManageUsers = (props) => {
 
   const filterResults = () => {
     //This filters our results! Name -> Cost.
-    let dummydatabase2 = dummyUserDataBase
+    let resultsFilter = dummyUserDataBase
     console.log (filteredUserList.username)
     if (filteredUserList.username){
-      dummydatabase2 = dummydatabase2.filter(function (dummy) {
+      resultsFilter = resultsFilter.filter(function (dummy) {
         return dummy.username.toLowerCase().includes( filteredUserList.username.toLowerCase());})
         }
         
     if (filteredUserList.email){
-    dummydatabase2 = dummydatabase2.filter(function (dummy) {
+      resultsFilter = resultsFilter.filter(function (dummy) {
       return dummy.email.includes(  filteredUserList.email.toLowerCase());})
       }
-    return dummydatabase2}
+    return resultsFilter}
 
-  const handleModifyUser = async (user) => {
-    try {
-      alert("UserName: " + user.username + " was modified");
-    } catch (error) {
-      console.error(error);
-    }
-  };
+ 
 
   return (
     <div>
