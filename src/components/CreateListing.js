@@ -55,31 +55,31 @@ const CreateListing = (props) => {
           name="Name"
           required
           onChange={(e) => setListingData({ ...listingData, name: e.target.value })}
-        />
+        /><p></p>
         <label>Description:</label>
         <input
           name="Description"
           required
           onChange={(e) => setListingData({ ...listingData, description: e.target.value })}
-        />
+        /><p></p>
         <label>Cost:</label>
         <input
           name="Cost"
           required
           onChange={(e) => setListingData({ ...listingData, cost: e.target.value })}
-        />
+        /><p></p>
         <label>On Hand:</label>
         <input
           name="OnHand"
           required
           onChange={(e) => setListingData({ ...listingData, onHand: e.target.value })}
-        />
+        /><p></p>
         <label>Photos:</label>
         <input
           name="Photos"
           required
           onChange={(e) => setListingData({ ...listingData, photos1: e.target.value })}
-        />
+        /><p></p>
         
         <label>Featured:</label>
         <input
@@ -87,7 +87,7 @@ const CreateListing = (props) => {
           type= "boolean"
           required
           onChange={(e) => setListingData({ ...listingData, featured: e.target.value })}
-        />
+        /><p></p>
         <Button type="submit">submit</Button>
       </form>
     );

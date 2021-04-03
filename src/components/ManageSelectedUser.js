@@ -128,7 +128,8 @@ const ManageSelectedUser = (props) => {
     try {
       //This creates the final Payload to send to the Patch for the Username.
       let finalPayload = {}
-      
+
+      //If the payload is missing the data from the Selected Listing, it will add it into the payload.
       if (!userPayload.name) {
         
         finalPayload.name = selectedUser.name ;
@@ -147,6 +148,16 @@ const ManageSelectedUser = (props) => {
       
     }
   };
+
+  const handlePasswordReset = async () => {
+    try {
+      //This assumes we can randomize a new password.
+      alert(selectedUser.userId + "has been sent a new password.")
+    } catch (error) {
+      console.error(error);
+      
+    }}
+  
   //   if(!admin){
   //     return <Redirect to="/" />}
 
@@ -197,7 +208,13 @@ const ManageSelectedUser = (props) => {
       >
         Commit Changes
       </Button>
-      <li>password: Reset Password Button </li>
+      <Button
+        type="button"
+        variant="secondary"
+        onClick={() => handlePasswordReset()}
+      >
+        Reset Password
+      </Button>
     </div>
   );
 };

@@ -104,12 +104,12 @@ const ManageSelectedListing = (props) => {
       //This creates the final Payload to send to the Patch for Item.
       let finalPayload = {};
 
+      //If the payload is missing the data from the Selected Listing, it will add it into the payload.
       if (!listingPayload.isActive) {
         finalPayload.isActive = selectedListing.isActive;
       } else {
         finalPayload.isActive = listingPayload.isActive;
       }
-
       if (!listingPayload.name) {
         finalPayload.name = selectedListing.name;
       } else {
@@ -129,6 +129,11 @@ const ManageSelectedListing = (props) => {
         finalPayload.description = selectedListing.description;
       } else {
         finalPayload.description = listingPayload.description;
+      }
+      if (!listingPayload.onHand) {
+        finalPayload.onHand = selectedListing.onHand;
+      } else {
+        finalPayload.onHand = listingPayload.onHand;
       }
       if (!listingPayload.photos) {
         finalPayload.photos = selectedListing.photos;
@@ -153,7 +158,7 @@ const ManageSelectedListing = (props) => {
   return (
     <div>
       <h1>Welcome to The Modify Listing Page:</h1>
-      {selectedListing.name}
+      <h2>{selectedListing.name}</h2>
       <h3>itemId: {selectedListing.itemId}</h3>
 
       <label>isActive: </label>

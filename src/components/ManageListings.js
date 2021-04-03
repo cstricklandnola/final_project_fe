@@ -6,13 +6,7 @@ import { CardColumns } from "react-bootstrap";
 import Button from 'react-bootstrap/Button'
 import {Link} from "react-router-dom"
 
-const handleSubmitEditItem = async (item) => {
-  try {
-    alert("ItemId: "+ item.itemId + " is ready to be editted.");
-  } catch (error) {
-    console.error(error);
-  }
-};
+
 
 const HandleSubmitDeleteItem = async (item) => {
     try {
@@ -25,6 +19,7 @@ const HandleSubmitDeleteItem = async (item) => {
 const ManageListings = (props) => {
     const {admin} = props
     const {selectedListing, setSelectedListing} = props
+    const [searchItem, setSearchItem] = useState("")
     // console.log (admin)
     // if(!admin){
     //   return <Redirect to="/" />}
@@ -118,17 +113,38 @@ const ManageListings = (props) => {
       ];
       //**************************************************** Delete whatever is contained in this ****************************************************||
       //Filters based off Active or Not.
-      const filterResults = dummyDatabase.filter(function (dummy) {
-        return dummy.isActive === true;})
+      
+
+        const filterResults = () => {
+          //This filters our results! Name -> Cost.
+          //We could use this to filter off one search bar, and have it progress down each possible data source.
+          let resultsFilter = dummyDatabase
+          console.log (searchItem.name)
+          if (searchItem.name){
+            resultsFilter = resultsFilter.filter(function (dummy) {
+              return dummy.name.toLowerCase().includes( searchItem.name.toLowerCase());})
+              }
+              
+          if (searchItem.cost){
+            resultsFilter = resultsFilter.filter(function (dummy) {
+            return dummy.cost < searchItem.cost;})
+            }
+          return resultsFilter}
     
       
     return (
         <div>
           <h1>Edit Listings:</h1>
+          <label>Search:</label>
+      <input
+          type="text"
+          
+          onChange={(e) => setSearchItem({...searchItem, name: e.target.value})}
+        />
           
           <div className="results">
           <CardColumns>
-            {filterResults?.map((item, index) => {
+            {filterResults()?.map((item, index) => {
               return (
                 
                 <Card

@@ -14,7 +14,8 @@ const handleSubmitRemoveFromCart = async (item) => {
 };
 
 const ShoppingCart = () => {
-  //||****************************************************||Delete whatever is contained in this ****************************************************||
+
+  //||****************************************************Delete whatever is contained in this ****************************************************||
   const dummyDatabase = [
     {
       itemId: 1,
@@ -103,6 +104,8 @@ const ShoppingCart = () => {
     }
   ];
 
+  
+
   const currentOrder = 
     {     
        order: [
@@ -119,7 +122,8 @@ const ShoppingCart = () => {
   //Filters based off Active or Not.
   const filterResults = dummyDatabase.filter(function (dummy) {
     return dummy.isActive === true;})
-console.log(currentOrder)
+
+  
 
 
 
