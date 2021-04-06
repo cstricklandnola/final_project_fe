@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { storeToken } from "../auth";
 import { Redirect } from "react-router-dom";
-import Card from "react-bootstrap/Card";
-import { CardColumns } from "react-bootstrap";
+
 import Button from "react-bootstrap/Button";
 
 //||****************************************************||Delete whatever is contained in this ****************************************************||
@@ -11,9 +10,15 @@ import Button from "react-bootstrap/Button";
 
 const ManageSelectedUser = (props) => {
   const { selectedUser, admin } = props;
+  
+
   const [userPayload, setUserPayload] = useState({});
+ // UserPayload is used to set the data needed for a Patch to the server.
+
   // if(!admin){
+  // This is the check to prevent non admins from even seeing the page.
   //   return <Redirect to="/" />}
+
   const handleCommitChanges = async () => {
     try {
       //This creates the final Payload to send to the Patch for the Username.

@@ -151,18 +151,16 @@ const handlePreviousOrders = async (user) => {
 
 const ManageUsers = (props) => {
   const {selectedUser, setSelectedUser} = props
-  const [filteredUser, setFilteredUser] = useState("");
+  //SelectedUser is to push the User information to the ManageSelectedUser component.
+ 
   const [filteredUserList, setFilteredUserList] = useState("");
+  //FilterUserList is used to filter the results via searching.
   
   const {admin} = props
   
   // if(!admin){
+  // This is the check to prevent non admins from even seeing the page.
   //   return <Redirect to="/" />}
-
-  //Filters based off Active or Not.
-  const filterResults2 = dummyUserDataBase.filter(function (dummy) {
-    return dummy.isActive === true;
-  });
 
   const filterResults = () => {
     //This filters our results! Name -> Cost.
@@ -199,7 +197,7 @@ const ManageUsers = (props) => {
         
     
       <div className="results">
-        {filteredUser.username}
+      
 
         <div className="users">
           <CardColumns>
