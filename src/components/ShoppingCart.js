@@ -2,12 +2,26 @@ import React, { useState } from "react";
 
 import { storeToken } from "../auth";
 import {Redirect} from "react-router-dom"
-
+import Table from 'react-bootstrap/Table'
 import Button from 'react-bootstrap/Button';
 
 const handleSubmitRemoveFromCart = async (item) => {
   try {
     alert("ItemId: "+ item.itemId + " was removed from the cart.");
+  } catch (error) {
+    console.error(error);
+  }
+};
+const handleSubmitOrder = async (item) => {
+  try {
+    alert("We are submitting the order.");
+  } catch (error) {
+    console.error(error);
+  }
+};
+const handleDeleteOrder = async (item) => {
+  try {
+    alert("We are deleting your cart.");
   } catch (error) {
     console.error(error);
   }
@@ -109,19 +123,29 @@ const ShoppingCart = () => {
   const currentOrder = 
     {     
        order: [
-          {itemId:1, 
-          count: 2},
+          {itemId:1,
+            name: "First Item",
+            price: 10.99, 
+           count: 2},
 
-          {itemId:3, 
+          {itemId:3,
+            name: "Third Item",
+            price: 1.99,  
             count: 4},
         ]
       }
 //**************************************************** Delete whatever is contained in this ****************************************************||
+
+let price = 0;
+///Math for pricing.
+
+currentOrder.order.forEach(item => {
+  price = price+item.price*item.count
+  console.log(price)}
+)
   
-  
-  //Filters based off Active or Not.
-  const filterResults = dummyDatabase.filter(function (dummy) {
-    return dummy.isActive === true;})
+
+
  
     
 
@@ -129,16 +153,49 @@ const ShoppingCart = () => {
     <div>
       <h1>Welcome to Your Shopping Cart:</h1>
       <h3>This is waiting for the back end to be finished to be fancy.</h3>
-      <div className="results">
+      <div className="results"></div>
+      <Table striped bordered hover>
+<thead>
+  <tr>
+    <th>Item ID</th>
+    <th>Product Name</th>
+    <th>Count</th>
+    <th>Price</th>
+    <th>Functions</th>
+  </tr>
+</thead>
+<tbody>
+      
       {currentOrder.order.map((item) => (
-        <li>Item: {item.itemId} Count: {item.count} <Button type="submit" onClick={() => handleSubmitRemoveFromCart(item)}>Remove Item</Button></li> 
+      
+  <tr>
+  <td>{item.itemId}</td>
+  <td>{item.name}</td>
+  <td>{item.count}</td>
+  <td>${item.count * item.price}</td>
+  
+  <td><Button type="submit" onClick={() => handleSubmitRemoveFromCart(item)}>Remove Item</Button> </td>
+  </tr>
+
+        
 
        
     ))}
-     
+  <tr>
+    <th></th>
+    <th></th>
+    <th>Total Price:</th>
+    <th>{price}</th>
+    <th>  <Button variant="success" type="submit" onClick={() => handleSubmitOrder()}>Check Out</Button>
+  <Button variant="danger" type="submit" onClick={() => handleDeleteOrder()}>Delete Order</Button></th>
+  </tr>
+    </tbody>
+  </Table>
+
+
                
       </div>
-    </div>
+    
   );
 };
 
