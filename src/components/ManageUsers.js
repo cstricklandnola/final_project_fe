@@ -11,6 +11,7 @@ const dummyUserDataBase = [
   {
     userId: 1,
     isActive: true,
+    isAdmin: true,
     username: "JohnSmith99",
     name: "John Smith",
     email: "a@a.com",
@@ -46,6 +47,7 @@ const dummyUserDataBase = [
   {
     userId: 2,
     isActive: true,
+    isAdmin: false,
     username: "AnnaJoe",
     name: "Anna Joe",
     email: "b@b.com",
@@ -81,6 +83,7 @@ const dummyUserDataBase = [
   {
     userId: 3,
     isActive: true,
+    isAdmin: false,
     username: "BillyBob11",
     name: "Billy Bob",
     email: "c@c.com",
@@ -148,18 +151,16 @@ const handlePreviousOrders = async (user) => {
 
 const ManageUsers = (props) => {
   const {selectedUser, setSelectedUser} = props
-  const [filteredUser, setFilteredUser] = useState("");
+  //SelectedUser is to push the User information to the ManageSelectedUser component.
+ 
   const [filteredUserList, setFilteredUserList] = useState("");
+  //FilterUserList is used to filter the results via searching.
   
   const {admin} = props
   
   // if(!admin){
+  // This is the check to prevent non admins from even seeing the page.
   //   return <Redirect to="/" />}
-
-  //Filters based off Active or Not.
-  const filterResults2 = dummyUserDataBase.filter(function (dummy) {
-    return dummy.isActive === true;
-  });
 
   const filterResults = () => {
     //This filters our results! Name -> Cost.
@@ -196,7 +197,7 @@ const ManageUsers = (props) => {
         
     
       <div className="results">
-        {filteredUser.username}
+      
 
         <div className="users">
           <CardColumns>

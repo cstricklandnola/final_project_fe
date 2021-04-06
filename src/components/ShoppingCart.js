@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import Card from 'react-bootstrap/Card'
-import CardGroup from 'react-bootstrap/CardGroup'
+
 import { storeToken } from "../auth";
 import {Redirect} from "react-router-dom"
-import { CardColumns } from "react-bootstrap";
+
 import Button from 'react-bootstrap/Button';
 
 const handleSubmitRemoveFromCart = async (item) => {

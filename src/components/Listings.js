@@ -7,7 +7,10 @@ import { CardColumns } from "react-bootstrap";
 
 const Listings = (props) => {
   const { orderStarted, setOrderStarted } = props;
+  // OrderedStarted is state to determine if a cart has already been made for the user.
   const [searchItem, setSearchItem] = useState("");
+  // SearchItem is used to determine what the user wants to search for. This is an object that also works with the slider for Cost.
+
   console.log(orderStarted);
 
   const handleSubmitAddToCart = async (item) => {
