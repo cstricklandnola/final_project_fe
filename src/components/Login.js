@@ -20,7 +20,8 @@ const Login = (props) => {
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
-    fetch("https://fitnesstrac-kr.herokuapp.com/api/users/login", {
+    
+    fetch("http://localhost:3000/api/customers/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -33,6 +34,7 @@ const Login = (props) => {
       .then((response) => response.json())
       .then((result) => {
         if (result.message === "you're logged in!") {
+          console.log(result.token)
           alert(result.message);
           setAuthorized(result.token);
           setLoggedIn(result.token);

@@ -2,17 +2,16 @@ import { getToken } from "../auth";
 const token = "I can't believe it."
 //const token = getToken();
 
-const baseURL = "notmadeyet";
+const baseURL = "http://localhost:3000/api/";
 
 //This code is all from the Fitness Tracker we did. Most of it can just be modified as necessary for the new API routes.
 
-export const fetchUserData = async () => {
+export const fetchAllProducts = async () => {
   try {
-    const response = await fetch(`${baseURL}users/me`, {
+    const response = await fetch(`http://localhost:3000/api/products`, {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
+      }
     });
     const data = await response.json();
 

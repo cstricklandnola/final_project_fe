@@ -1,17 +1,29 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import { storeToken } from "../auth";
 import { Redirect } from "react-router-dom";
 import { CardColumns } from "react-bootstrap";
+import {fetchAllProducts} from "../api/index"
 
 const Listings = (props) => {
   const { orderStarted, setOrderStarted } = props;
   // OrderedStarted is state to determine if a cart has already been made for the user.
   const [searchItem, setSearchItem] = useState("");
   // SearchItem is used to determine what the user wants to search for. This is an object that also works with the slider for Cost.
+  const [products, setProducts] = useState("");
+  
 
-  console.log(orderStarted);
+  const getAllProducts =  async () => {
+    let products =  await fetchAllProducts()
+    setProducts(products)
+    console.log(products);
+  }
+
+  useEffect(getAllProducts,[])
+  console.log(products)
+  console.log ("Look Above.")
+  
 
   const handleSubmitAddToCart = async (item) => {
     try {
@@ -125,9 +137,7 @@ const Listings = (props) => {
 
   // This needs to have an nested filter checks for item cost, name, and artist.
 
-  let filterResults2 = dummyDatabase.filter(function (dummy) {
-    return dummy.cost < searchItem.cost;
-  });
+ 
 
   const filterResults = () => {
     //This filters our results! Name -> Cost.
