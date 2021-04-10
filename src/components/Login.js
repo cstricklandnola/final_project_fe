@@ -5,17 +5,23 @@ import Button from "react-bootstrap/Button";
 
 const Login = (props) => {
   const [user, setUser] = useState("");
+  
   const {
     setAuthorized,
     setCurrentUser,
     loggedIn,
     setLoggedIn,
     setAdmin,
+    currentUser,
+
+
   } = props;
+
+  let dataDump = {}
 
   function helperHandleSubmit(e) {
     setUser({ ...user, password: e.target.value });
-    setCurrentUser(user.username);
+    
   }
 
   const handleSubmit = (evt) => {
@@ -33,21 +39,33 @@ const Login = (props) => {
     })
       .then((response) => response.json())
       .then((result) => {
-        if (result.message === "you're logged in!") {
-          console.log(result.token)
+        
+        if (result.message === "you're logged in! ") {
+          dataDump = result.customer
+          console.log(result.customer.id)
+          setCurrentUser(dataDump)
+          
           alert(result.message);
+          
           setAuthorized(result.token);
           setLoggedIn(result.token);
-          setAdmin(result.token);
+          setAdmin(result.customer.isAdmin);
           storeToken(result.token);
+          
+          
+
+
         } else {
           alert(result.message);
         }
+        
       })
+     
       .catch(console.error);
   };
   if (loggedIn) {
-    return <Redirect to="/" />;
+    console.log(currentUser)
+    return <Redirect to="/listings" />;
   } else {
     return (
       <form onSubmit={handleSubmit}>

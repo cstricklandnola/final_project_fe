@@ -5,8 +5,9 @@ import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 
 const Home = (props) => {
-  const { orderStarted, setOrderStarted } = props;
+  const { orderStarted, setOrderStarted, products } = props;
   
+  console.log(products)
 
   const handleSubmitAddToCart = async (item) => {
     try {
@@ -22,44 +23,9 @@ const Home = (props) => {
     }
   };
   //||**************************************************** Delete whatever is contained in this ****************************************************||
-  const dummyDatabase = [
-    {
-      itemId: 1,
-      isActive: true,
-      name: "First Item",
-      description: "This is a description",
-      cost: 10.99,
-      featured: true,
-      onHand: 20,
-      keywords: ["car", "engine"],
-      category: "cars",
-      photos: [
-        "http://placekitten.com/200/287",
-        "http://placekitten.com/200/299",
-        "http://placekitten.com/200/300",
-      ],
-      reviews: ["reviewId"],
-    },
-    {
-      itemId: 2,
-      isActive: true,
-      name: "Second Item",
-      description: "This is a second description",
-      cost: 1.99,
-      featured: true,
-      onHand: 20,
-      keywords: ["car", "engine"],
-      category: "televisions",
-      photos: [
-        "http://placekitten.com/200/227",
-        "http://placekitten.com/200/199",
-        "http://placekitten.com/200/111",
-      ],
-      reviews: ["reviewId"],
-    },
-  ];
+  
   //||**************************************************** Delete whatever is contained in this ****************************************************||
-  const filterResults = dummyDatabase.filter(function (dummy) {
+  const filterResults = products.filter(function (dummy) {
     return dummy.isActive === true && dummy.featured === true;
   });
 
@@ -74,14 +40,14 @@ const Home = (props) => {
               <Carousel.Item interval={1000}>
                 <img
                   className="d-block w-100"
-                  src={item.photos[0]}
+                  src={item.img}
                   alt="First slide"
                   width="300"
                   height="200"
                 />
                 <Carousel.Caption>
                   <h3>{item.name}</h3>
-                  <p>${item.cost}</p>
+                  <p>{item.price}</p>
                   <Button
                     type="button"
                     onClick={() => handleSubmitAddToCart(item)}

@@ -24,12 +24,12 @@ const Register = (props) => {
       .then((result) => {
         console.log(result);
 
-        if (result.message === "you're signed up!") {
+        if (result.message === "thank you for signing up") {
           alert("Registered.");
           setAuthorized(result.token)
-          setLoggedIn(result.token);
+          setLoggedIn(result);
         } else {
-          alert(result.message);
+          alert("Failed.");
         }
       })
       .catch(console.error);

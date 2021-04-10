@@ -27,10 +27,10 @@ import {
 
 const App = () => {
   const [authorized, setAuthorized] = useState(false);
-  const [currentUser, setCurrentUser] = useState("");
+  const [currentUser, setCurrentUser] = useState();
   //Current User = Current User Data loaded in on log in.
   const [loggedIn, setLoggedIn] = useState(getToken());
-  const [admin, setAdmin] = useState(false);
+  const [admin, setAdmin] = useState(null);
   const [selectedUser, setSelectedUser] = useState("");
   // This is used between ManageUser and ManageSelectedUser.
   const [selectedListing, setSelectedListing] = useState("");
@@ -48,19 +48,7 @@ const App = () => {
       
   }, [])
 
-  // useEffect(async () => {
-  //   if (loggedIn) {
-  //       try {
-  //           const data = await fetchUserData();
-  //           setCurrentUser(data.username);
-  //           const grabbedActivities = await fetchAllActivites();
-  //           setActivities(grabbedActivities);
 
-  //       } catch (error) {
-  //           console.error(error);
-  //       }
-  //   }
-  // }, [loggedIn])
 
   return (
     <Router>
@@ -70,7 +58,7 @@ const App = () => {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
             <Nav.Link href="/listings">Listings</Nav.Link>
-            {!admin ? (
+            {admin ? (
               <NavDropdown title="Admin" id="basic-nav-dropdown">
                 <NavDropdown.Item href="/ManageUsers">
                   Manage Users
@@ -124,6 +112,8 @@ const App = () => {
               admin={admin}
               orderStarted={orderStarted}
               setOrderStarted={setOrderStarted}
+              products = {products}
+              currentUser = {currentUser}
             />
           </Route>
           <Route path="/ManageUsers">
@@ -146,6 +136,9 @@ const App = () => {
               setAuthorized={setAuthorized}
               authorized={authorized}
               setAdmin={setAdmin}
+              currentUser = {currentUser}
+
+              
             />
           </Route>
           <Route path="/Register">
@@ -161,10 +154,12 @@ const App = () => {
               loggedIn={loggedIn}
               setLoggedIn={setLoggedIn}
               admin={admin}
+              currentUser = {currentUser}
               orderStarted={orderStarted}
               setOrderStarted={setOrderStarted}
               products = {products}
               setProducts = {setProducts}
+             
             />
           </Route>
           <Route path="/CreateListing">
@@ -181,6 +176,7 @@ const App = () => {
               setAuthorized={setAuthorized}
               loggedIn={loggedIn}
               setLoggedIn={setLoggedIn}
+              currentUser = {currentUser}
             />
           </Route>
           <Route path="/ManageListings">
@@ -191,6 +187,8 @@ const App = () => {
               admin={admin}
               selectedListing={selectedListing}
               setSelectedListing={setSelectedListing}
+              products = {products}
+              setProducts = {setProducts}
             />
           </Route>
 

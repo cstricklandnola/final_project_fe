@@ -1,5 +1,6 @@
-import React, { useState } from "react";
-
+import React, { useState, useEffect } from "react";
+import Spinner from "react-bootstrap/Spinner";
+import axios from "axios";
 import { storeToken } from "../auth";
 import {Redirect} from "react-router-dom"
 import Table from 'react-bootstrap/Table'
@@ -27,7 +28,16 @@ const handleDeleteOrder = async (item) => {
   }
 };
 
-const ShoppingCart = () => {
+const ShoppingCart = (props) => {
+  const {currentUser} = props
+  const [shoppingCart, setShoppingCart] = useState("");
+  useEffect(async () => {
+    console.log(currentUser)
+    axios
+      .get(`https://intense-lowlands-29407.herokuapp.com/api/shopping_cart/2`)
+      .then((response) => setShoppingCart(response.data))
+      .then(console.log(shoppingCart))
+  }, []);
 
   //||****************************************************Delete whatever is contained in this ****************************************************||
   const dummyDatabase = [
@@ -144,11 +154,16 @@ currentOrder.order.forEach(item => {
   console.log(price)}
 )
   
-
-
- 
-    
-
+if (shoppingCart[0] === undefined) {
+  return (
+    <>
+    <h1>Welcome to Your Shopping Cart:</h1>
+      <Spinner animation="border" role="status">
+        <span className="sr-only">Loading...</span>
+      </Spinner>
+    </>
+  );
+} else {
   return (
     <div>
       <h1>Welcome to Your Shopping Cart:</h1>
@@ -197,6 +212,6 @@ currentOrder.order.forEach(item => {
       </div>
     
   );
-};
+}}
 
 export default ShoppingCart;

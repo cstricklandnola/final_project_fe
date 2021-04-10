@@ -9,7 +9,7 @@ import Spinner from "react-bootstrap/Spinner";
 import axios from "axios";
 
 const Listings = (props) => {
-  const { orderStarted, setOrderStarted, setProducts, products } = props;
+  const { orderStarted, setOrderStarted, setProducts, products, currentUser } = props;
   // OrderedStarted is state to determine if a cart has already been made for the user.
   const [searchItem, setSearchItem] = useState("");
   // SearchItem is used to determine what the user wants to search for. This is an object that also works with the slider for Cost.
@@ -25,9 +25,25 @@ const Listings = (props) => {
       //Check state to see if an order has been started. If it hasn't been, start a new order. If it has been, add item.
       if (orderStarted) {
         alert("Id: " + item.id + " was added to the cart.");
-        console.log(products);
+        axios.patch (`https://intense-lowlands-29407.herokuapp.com/api/shopping_cart/${currentUser.id}`,
+        {orderId: currentUser.id,
+        productId: item.id,
+        quantity: "1"
+        })
       } else {
-        alert("Id: " + item.id + " was added to a NEW cart!");
+        //orders/
+
+        axios.post ("https://intense-lowlands-29407.herokuapp.com/api/orders/",
+        {orderId: currentUser.id,
+        productId: item.id,
+        status: "Processing",
+        quantity: "1"
+        })
+          
+        
+        console.log(currentUser.id)
+
+        
         setOrderStarted(true);
       }
     } catch (error) {
@@ -68,12 +84,15 @@ const Listings = (props) => {
             .includes(searchItem.name.toLowerCase());
         });
       }
-      console.log(searchItem.price);
+      
       if (searchItem.price) {
         resultsFilter = resultsFilter.filter(function (dummy) {
-          console.log(searchItem.price);
-          console.log(parseFloat(dummy.price));
-          return parseInt(dummy.price) < parseInt(searchItem.price);
+          //Magic to make $ disappear.
+          var g = dummy.price
+          g = g.replace(/\$/g,"")
+          g = parseFloat(g)
+          
+          return g < parseInt(searchItem.price);
         });
       }
       return resultsFilter;
