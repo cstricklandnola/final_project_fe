@@ -11,7 +11,7 @@ const Register = (props) => {
     console.log (user.username)
     console.log (user.password)
     fetch(
-      "http://localhost:3000/api/customers/register",
+      "https://intense-lowlands-29407.herokuapp.com/api/customers/register",
       {
         method: "POST",
         headers: {

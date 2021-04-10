@@ -21,7 +21,7 @@ const Login = (props) => {
   const handleSubmit = (evt) => {
     evt.preventDefault();
     
-    fetch("http://localhost:3000/api/customers/login", {
+    fetch("https://intense-lowlands-29407.herokuapp.com/api/customers/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -2,13 +2,14 @@ import "./App.css";
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Link, Switch, Route } from "react-router-dom";
 import { getToken, clearToken } from "./auth";
-import { fetchUserData, fetchAllActivites } from "./api";
+import { fetchAllProducts } from "./api";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import FormControl from "react-bootstrap/Form";
 import NavDropdown from "react-bootstrap/NavDropdown";
+import axios from 'axios'
 
 import {
   CreateListing,
@@ -35,8 +36,17 @@ const App = () => {
   const [selectedListing, setSelectedListing] = useState("");
   // This is used between ManangeListings and ManageSelectedListing to push data.
   const [orderStarted, setOrderStarted] = useState("");
+
+  const [products, setProducts] = useState([]);
   
 
+
+  useEffect(() => {
+    axios
+      .get("https://intense-lowlands-29407.herokuapp.com/api/")
+      .then(response => setProducts(response.data));
+      
+  }, [])
 
   // useEffect(async () => {
   //   if (loggedIn) {
@@ -153,6 +163,8 @@ const App = () => {
               admin={admin}
               orderStarted={orderStarted}
               setOrderStarted={setOrderStarted}
+              products = {products}
+              setProducts = {setProducts}
             />
           </Route>
           <Route path="/CreateListing">
@@ -161,6 +173,7 @@ const App = () => {
               loggedIn={loggedIn}
               setLoggedIn={setLoggedIn}
               admin={admin}
+              
             />
           </Route>
           <Route path="/ShoppingCart">
