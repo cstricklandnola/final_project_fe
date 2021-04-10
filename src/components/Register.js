@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import {Redirect} from "react-router-dom"
+import Button from 'react-bootstrap/Button'
 const Register = (props) => {
   const [user, setUser] = useState("");
 
@@ -57,7 +58,7 @@ const Register = (props) => {
           required
           onChange={(e) => setUser({ ...user, password: e.target.value })}
         />
-        <button type="submit">submit</button>
+        <Button type="submit">submit</Button>
       </form>
     );
   }    

@@ -1,39 +1,34 @@
 import React, { useState } from "react";
 import Card from "react-bootstrap/Card";
-import Button from "react-bootstrap/Button";
 import { storeToken } from "../auth";
 import { Redirect } from "react-router-dom";
 import { CardColumns } from "react-bootstrap";
+import Button from "react-bootstrap/Button";
+import { Link } from "react-router-dom";
 
-const Listings = (props) => {
-  const { orderStarted, setOrderStarted } = props;
-  // OrderedStarted is state to determine if a cart has already been made for the user.
+const HandleSubmitDeleteItem = async (item) => {
+  try {
+    alert("ItemId: " + item.itemId + " is going to be deleted.");
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const ManageListings = (props) => {
+
+  const { admin, selectedListing, setSelectedListing } = props;
+  // SelectedListing is used to push the data from ManageListing to ManageSelectedListing. 
   const [searchItem, setSearchItem] = useState("");
-  // SearchItem is used to determine what the user wants to search for. This is an object that also works with the slider for Cost.
+  // if(!admin){
+  // This is the check to prevent non admins from even seeing the page.
+  //   return <Redirect to="/" />}
 
-  console.log(orderStarted);
-
-  const handleSubmitAddToCart = async (item) => {
-    try {
-      //Check state to see if an order has been started. If it hasn't been, start a new order. If it has been, add item.
-      if (orderStarted) {
-        alert("ItemId: " + item.itemId + " was added to the cart.");
-      } else {
-        alert("ItemId: " + item.itemId + " was added to a NEW cart!");
-        setOrderStarted(true);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  //||**************************************************** Delete whatever is contained in this ****************************************************||
+  //||****************************************************||Delete whatever is contained in this ****************************************************||
   const dummyDatabase = [
     {
       itemId: 1,
       isActive: true,
       name: "First Item",
-      artist: "Steve",
       description: "This is a description",
       cost: 10.99,
       featured: false,
@@ -51,9 +46,8 @@ const Listings = (props) => {
       itemId: 2,
       isActive: true,
       name: "Second Item",
-      artist: "Steve",
-      description: "This is a second description, banana",
-      cost: 4.99,
+      description: "This is a second description",
+      cost: 1.99,
       featured: false,
       onHand: 20,
       keywords: ["car", "engine"],
@@ -69,9 +63,8 @@ const Listings = (props) => {
       itemId: 3,
       isActive: true,
       name: "Third Item",
-      artist: "Bill",
-      description: "This is a third description",
-      cost: 2.99,
+      description: "This is a second description",
+      cost: 1.99,
       featured: false,
       onHand: 20,
       keywords: ["car", "engine"],
@@ -87,8 +80,7 @@ const Listings = (props) => {
       itemId: 4,
       isActive: true,
       name: "Fourth Item",
-      artist: "Joe",
-      description: "This is a fourth description",
+      description: "This is a second description",
       cost: 1.99,
       featured: false,
       onHand: 20,
@@ -105,9 +97,8 @@ const Listings = (props) => {
       itemId: 5,
       isActive: true,
       name: "Fifth Item",
-      artist: "Joe",
-      description: "This is a fifth description",
-      cost: 100.99,
+      description: "This is a second description",
+      cost: 1.99,
       featured: false,
       onHand: 20,
       keywords: ["car", "engine"],
@@ -120,42 +111,17 @@ const Listings = (props) => {
       reviews: ["reviewId"],
     },
   ];
-  //||****************************************************Delete whatever is contained in this ****************************************************||
+  //**************************************************** Delete whatever is contained in this ****************************************************||
   //Filters based off Active or Not.
-
-  // This needs to have an nested filter checks for item cost, name, and artist.
-
-  let filterResults2 = dummyDatabase.filter(function (dummy) {
-    return dummy.cost < searchItem.cost;
-  });
 
   const filterResults = () => {
     //This filters our results! Name -> Cost.
     //We could use this to filter off one search bar, and have it progress down each possible data source.
     let resultsFilter = dummyDatabase;
-
+    console.log(searchItem.name);
     if (searchItem.name) {
       resultsFilter = resultsFilter.filter(function (dummy) {
         return dummy.name.toLowerCase().includes(searchItem.name.toLowerCase());
-      });
-    }
-    console.log(resultsFilter);
-    if (resultsFilter.length === 0) {
-      console.log(resultsFilter);
-      //If the filter put is the point where nothing exists by name, it will then reload the database, and then search by description.
-      resultsFilter = dummyDatabase.filter(function (dummy) {
-        return dummy.description
-          .toLowerCase()
-          .includes(searchItem.name.toLowerCase());
-      });
-    }
-    if (resultsFilter.length === 0) {
-      console.log(resultsFilter);
-      //If the filter put is the point where nothing exists by description, it will then reload the database, and then search by artist.
-      resultsFilter = dummyDatabase.filter(function (dummy) {
-        return dummy.artist
-          .toLowerCase()
-          .includes(searchItem.name.toLowerCase());
       });
     }
 
@@ -169,19 +135,11 @@ const Listings = (props) => {
 
   return (
     <div>
-      <h1>Welcome to The Shop Listings:</h1>
+      <h1>Edit Listings:</h1>
       <label>Search:</label>
       <input
         type="text"
         onChange={(e) => setSearchItem({ ...searchItem, name: e.target.value })}
-      />
-      <label>Cost:</label>
-
-      <input
-        type="range"
-        min="1"
-        max="1000"
-        onChange={(e) => setSearchItem({ ...searchItem, cost: e.target.value })}
       />
 
       <div className="results">
@@ -193,7 +151,6 @@ const Listings = (props) => {
                 <Card.Body>
                   <Card.Text>
                     <h2>{item.name}</h2>
-                    <h3>By: {item.artist}</h3>
                     <h4>${item.cost}</h4>
                     <li>
                       <b>Description:</b> {item.description}
@@ -201,14 +158,23 @@ const Listings = (props) => {
                     <li>
                       <b>Reviews:</b> {item.reviews}
                     </li>
-                    <form>
+
+                    <Link to="/ManageSelectedListing">
                       <Button
                         type="button"
-                        onClick={() => handleSubmitAddToCart(item)}
+                        onClick={() => setSelectedListing(item)}
                       >
-                        Add to Cart
+                        Modify Listing
                       </Button>
-                    </form>
+                    </Link>
+
+                    <Button
+                      type="button"
+                      variant="danger"
+                      onClick={() => HandleSubmitDeleteItem(item)}
+                    >
+                      Delete
+                    </Button>
                   </Card.Text>
                 </Card.Body>
               </Card>
@@ -220,4 +186,4 @@ const Listings = (props) => {
   );
 };
 
-export default Listings;
+export default ManageListings;
