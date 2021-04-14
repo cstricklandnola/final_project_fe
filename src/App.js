@@ -74,7 +74,9 @@ const App = () => {
                 </NavDropdown.Item>
               </NavDropdown>
             ) : null}
-            <Nav.Link href="/ShoppingCart">Shopping Cart</Nav.Link>
+            <Nav.Link href="/ShoppingCart"
+            currentUser = {currentUser}
+            >Shopping Cart</Nav.Link>
           </Nav>
 
           <Form inline>
@@ -146,6 +148,7 @@ const App = () => {
               setAuthorized={setAuthorized}
               loggedIn={loggedIn}
               setLoggedIn={setLoggedIn}
+              currentUser = {currentUser}
             />
           </Route>
           <Route path="/Listings">
@@ -168,6 +171,7 @@ const App = () => {
               loggedIn={loggedIn}
               setLoggedIn={setLoggedIn}
               admin={admin}
+              currentUser = {currentUser}
               
             />
           </Route>
@@ -177,6 +181,8 @@ const App = () => {
               loggedIn={loggedIn}
               setLoggedIn={setLoggedIn}
               currentUser = {currentUser}
+              products = {products}
+              setProducts = {setProducts}
             />
           </Route>
           <Route path="/ManageListings">
@@ -189,6 +195,7 @@ const App = () => {
               setSelectedListing={setSelectedListing}
               products = {products}
               setProducts = {setProducts}
+              currentUser = {currentUser}
             />
           </Route>
 
@@ -199,6 +206,7 @@ const App = () => {
               setLoggedIn={setLoggedIn}
               admin={admin}
               selectedUser={selectedUser}
+              currentUser = {currentUser}
             />
           </Route>
           <Route path="/ManageSelectedListing">

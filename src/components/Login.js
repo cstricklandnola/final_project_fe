@@ -42,7 +42,7 @@ const Login = (props) => {
         
         if (result.message === "you're logged in! ") {
           dataDump = result.customer
-          console.log(result.customer.id)
+          document.cookie = result.customer.id
           setCurrentUser(dataDump)
           
           alert(result.message);

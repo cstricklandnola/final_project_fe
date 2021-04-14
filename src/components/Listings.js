@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
-import { storeToken } from "../auth";
+import { getToken } from "../auth";
 import { Redirect } from "react-router-dom";
 import { CardColumns } from "react-bootstrap";
 import { fetchAllProducts } from "../api/index";
@@ -10,6 +10,8 @@ import axios from "axios";
 
 const Listings = (props) => {
   const { orderStarted, setOrderStarted, setProducts, products, currentUser } = props;
+  const userKey = document.cookie
+  const token = getToken()
   // OrderedStarted is state to determine if a cart has already been made for the user.
   const [searchItem, setSearchItem] = useState("");
   // SearchItem is used to determine what the user wants to search for. This is an object that also works with the slider for Cost.
@@ -23,29 +25,21 @@ const Listings = (props) => {
   const handleSubmitAddToCart = async (item) => {
     try {
       //Check state to see if an order has been started. If it hasn't been, start a new order. If it has been, add item.
-      if (orderStarted) {
-        alert("Id: " + item.id + " was added to the cart.");
-        axios.patch (`https://intense-lowlands-29407.herokuapp.com/api/shopping_cart/${currentUser.id}`,
-        {orderId: currentUser.id,
-        productId: item.id,
-        quantity: "1"
-        })
-      } else {
+      
         //orders/
 
         axios.post ("https://intense-lowlands-29407.herokuapp.com/api/orders/",
-        {orderId: currentUser.id,
+        {orderId: userKey,
         productId: item.id,
         status: "Processing",
-        quantity: "1"
-        })
-          
+        quantity: "1",
         
-        console.log(currentUser.id)
+        })
+        .then((response) => console.log(response))
 
         
-        setOrderStarted(true);
-      }
+        ;
+      
     } catch (error) {
       console.error(error);
     }
@@ -110,6 +104,7 @@ const Listings = (props) => {
       </>
     );
   } else {
+    
     return (
       <div>
         <h1>Welcome to The Shop Listings:</h1>
