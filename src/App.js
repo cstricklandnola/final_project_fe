@@ -2,13 +2,14 @@ import "./App.css";
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Link, Switch, Route } from "react-router-dom";
 import { getToken, clearToken } from "./auth";
-import { fetchUserData, fetchAllActivites } from "./api";
+import { fetchAllProducts } from "./api";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import FormControl from "react-bootstrap/Form";
 import NavDropdown from "react-bootstrap/NavDropdown";
+import axios from 'axios'
 
 import {
   CreateListing,
@@ -26,30 +27,28 @@ import {
 
 const App = () => {
   const [authorized, setAuthorized] = useState(false);
-  const [currentUser, setCurrentUser] = useState("");
+  const [currentUser, setCurrentUser] = useState();
   //Current User = Current User Data loaded in on log in.
   const [loggedIn, setLoggedIn] = useState(getToken());
-  const [admin, setAdmin] = useState(false);
+  const [admin, setAdmin] = useState(null);
   const [selectedUser, setSelectedUser] = useState("");
   // This is used between ManageUser and ManageSelectedUser.
   const [selectedListing, setSelectedListing] = useState("");
   // This is used between ManangeListings and ManageSelectedListing to push data.
   const [orderStarted, setOrderStarted] = useState("");
 
+  const [products, setProducts] = useState([]);
+  
 
-  // useEffect(async () => {
-  //   if (loggedIn) {
-  //       try {
-  //           const data = await fetchUserData();
-  //           setCurrentUser(data.username);
-  //           const grabbedActivities = await fetchAllActivites();
-  //           setActivities(grabbedActivities);
 
-  //       } catch (error) {
-  //           console.error(error);
-  //       }
-  //   }
-  // }, [loggedIn])
+  useEffect(() => {
+    axios
+      .get("https://intense-lowlands-29407.herokuapp.com/api/")
+      .then(response => setProducts(response.data));
+      
+  }, [])
+
+
 
   return (
     <Router>
@@ -59,7 +58,7 @@ const App = () => {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
             <Nav.Link href="/listings">Listings</Nav.Link>
-            {!admin ? (
+            {admin ? (
               <NavDropdown title="Admin" id="basic-nav-dropdown">
                 <NavDropdown.Item href="/ManageUsers">
                   Manage Users
@@ -75,7 +74,9 @@ const App = () => {
                 </NavDropdown.Item>
               </NavDropdown>
             ) : null}
-            <Nav.Link href="/ShoppingCart">Shopping Cart</Nav.Link>
+            <Nav.Link href="/ShoppingCart"
+            currentUser = {currentUser}
+            >Shopping Cart</Nav.Link>
           </Nav>
 
           <Form inline>
@@ -113,6 +114,8 @@ const App = () => {
               admin={admin}
               orderStarted={orderStarted}
               setOrderStarted={setOrderStarted}
+              products = {products}
+              currentUser = {currentUser}
             />
           </Route>
           <Route path="/ManageUsers">
@@ -135,6 +138,9 @@ const App = () => {
               setAuthorized={setAuthorized}
               authorized={authorized}
               setAdmin={setAdmin}
+              currentUser = {currentUser}
+
+              
             />
           </Route>
           <Route path="/Register">
@@ -142,6 +148,7 @@ const App = () => {
               setAuthorized={setAuthorized}
               loggedIn={loggedIn}
               setLoggedIn={setLoggedIn}
+              currentUser = {currentUser}
             />
           </Route>
           <Route path="/Listings">
@@ -150,8 +157,12 @@ const App = () => {
               loggedIn={loggedIn}
               setLoggedIn={setLoggedIn}
               admin={admin}
+              currentUser = {currentUser}
               orderStarted={orderStarted}
               setOrderStarted={setOrderStarted}
+              products = {products}
+              setProducts = {setProducts}
+             
             />
           </Route>
           <Route path="/CreateListing">
@@ -160,6 +171,8 @@ const App = () => {
               loggedIn={loggedIn}
               setLoggedIn={setLoggedIn}
               admin={admin}
+              currentUser = {currentUser}
+              
             />
           </Route>
           <Route path="/ShoppingCart">
@@ -167,6 +180,9 @@ const App = () => {
               setAuthorized={setAuthorized}
               loggedIn={loggedIn}
               setLoggedIn={setLoggedIn}
+              currentUser = {currentUser}
+              products = {products}
+              setProducts = {setProducts}
             />
           </Route>
           <Route path="/ManageListings">
@@ -177,6 +193,9 @@ const App = () => {
               admin={admin}
               selectedListing={selectedListing}
               setSelectedListing={setSelectedListing}
+              products = {products}
+              setProducts = {setProducts}
+              currentUser = {currentUser}
             />
           </Route>
 
@@ -187,6 +206,7 @@ const App = () => {
               setLoggedIn={setLoggedIn}
               admin={admin}
               selectedUser={selectedUser}
+              currentUser = {currentUser}
             />
           </Route>
           <Route path="/ManageSelectedListing">

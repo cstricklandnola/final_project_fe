@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { storeToken } from "../auth";
-import {Link} from "react-router-dom"
+import { getToken } from "../auth";
+import { Link } from "react-router-dom";
 import Card from "react-bootstrap/Card";
 import { CardColumns } from "react-bootstrap";
-import Modal from 'react-bootstrap/Modal'
-import Button from 'react-bootstrap/Button';
+import Modal from "react-bootstrap/Modal";
+import Button from "react-bootstrap/Button";
+import axios from "axios";
 
 //||**************************************************** Delete whatever is contained in this ****************************************************||
 const dummyUserDataBase = [
@@ -124,7 +125,6 @@ const dummyUserDataBase = [
 ];
 // **************************************************** Delete whatever is contained in this ****************************************************||
 
-
 // const handleSelectUser = async (value, setSelectedUser, selectedUser) => {
 //   try {
 //     const filterResults2 = dummyUserDataBase.filter(function (dummy) {
@@ -137,6 +137,8 @@ const dummyUserDataBase = [
 //   }
 // };
 
+const token = getToken();
+
 const handlePreviousOrders = async (user) => {
   try {
     console.log(user.previousOrders);
@@ -145,60 +147,71 @@ const handlePreviousOrders = async (user) => {
   }
 };
 
-
-
-
-
 const ManageUsers = (props) => {
-  const {selectedUser, setSelectedUser} = props
+  const { selectedUser, setSelectedUser } = props;
   //SelectedUser is to push the User information to the ManageSelectedUser component.
- 
+
   const [filteredUserList, setFilteredUserList] = useState("");
   //FilterUserList is used to filter the results via searching.
-  
-  const {admin} = props
-  
+
+  const { admin } = props;
+
   // if(!admin){
   // This is the check to prevent non admins from even seeing the page.
   //   return <Redirect to="/" />}
 
+  useEffect(() => {
+    axios
+      .get(
+        "https://intense-lowlands-29407.herokuapp.com/api/customers/manage_customers",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      .then((response) => console.log(response));
+  }, []);
+
   const filterResults = () => {
     //This filters our results! Name -> Cost.
-    let resultsFilter = dummyUserDataBase
-    console.log (filteredUserList.username)
-    if (filteredUserList.username){
+    let resultsFilter = dummyUserDataBase;
+    console.log(filteredUserList.username);
+    if (filteredUserList.username) {
       resultsFilter = resultsFilter.filter(function (dummy) {
-        return dummy.username.toLowerCase().includes( filteredUserList.username.toLowerCase());})
-        }
-        
-    if (filteredUserList.email){
-      resultsFilter = resultsFilter.filter(function (dummy) {
-      return dummy.email.includes(  filteredUserList.email.toLowerCase());})
-      }
-    return resultsFilter}
+        return dummy.username
+          .toLowerCase()
+          .includes(filteredUserList.username.toLowerCase());
+      });
+    }
 
- 
+    if (filteredUserList.email) {
+      resultsFilter = resultsFilter.filter(function (dummy) {
+        return dummy.email.includes(filteredUserList.email.toLowerCase());
+      });
+    }
+    return resultsFilter;
+  };
 
   return (
     <div>
       <h1>Welcome to The User Database:</h1>
       <label>Username Search:</label>
       <input
-          type="text"
-          
-          onChange={(e) => setFilteredUserList({...filteredUserList, username: e.target.value})}
-        />
+        type="text"
+        onChange={(e) =>
+          setFilteredUserList({ ...filteredUserList, username: e.target.value })
+        }
+      />
       <label>E-Mail Search:</label>
-    <input
-          type="text"
-          
-          onChange={(e) => setFilteredUserList({...filteredUserList, email: e.target.value})}
-        />
-        
-    
-      <div className="results">
-      
+      <input
+        type="text"
+        onChange={(e) =>
+          setFilteredUserList({ ...filteredUserList, email: e.target.value })
+        }
+      />
 
+      <div className="results">
         <div className="users">
           <CardColumns>
             {filterResults()?.map((user, index) => {
@@ -206,12 +219,12 @@ const ManageUsers = (props) => {
                 <Card style={{ width: "18rem" }} className="mb-2">
                   <Card.Body>
                     <Card.Text>
-                    <li>
+                      <li>
                         <b>UserId:</b> {user.userId}
-                    </li>
-                    <li>
+                      </li>
+                      <li>
                         <b>Username:</b> {user.username}
-                        </li>
+                      </li>
                       <li>
                         <b>Email:</b> {user.email}
                       </li>
@@ -219,7 +232,8 @@ const ManageUsers = (props) => {
                         <b>IsActive:</b> {user.isActive}
                       </li>
                       <li>
-                        <b>Previous Orders:</b>{user.uniqueOrderId}
+                        <b>Previous Orders:</b>
+                        {user.uniqueOrderId}
                       </li>
 
                       <Link to="/ManageSelectedUser">
@@ -229,7 +243,7 @@ const ManageUsers = (props) => {
                         >
                           Modify User
                         </Button>
-                        </Link>
+                      </Link>
                       <Button
                         type="button"
                         variant="secondary"

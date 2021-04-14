@@ -5,22 +5,29 @@ import Button from "react-bootstrap/Button";
 
 const Login = (props) => {
   const [user, setUser] = useState("");
+  
   const {
     setAuthorized,
     setCurrentUser,
     loggedIn,
     setLoggedIn,
     setAdmin,
+    currentUser,
+
+
   } = props;
+
+  let dataDump = {}
 
   function helperHandleSubmit(e) {
     setUser({ ...user, password: e.target.value });
-    setCurrentUser(user.username);
+    
   }
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
-    fetch("https://fitnesstrac-kr.herokuapp.com/api/users/login", {
+    
+    fetch("https://intense-lowlands-29407.herokuapp.com/api/customers/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -32,20 +39,33 @@ const Login = (props) => {
     })
       .then((response) => response.json())
       .then((result) => {
-        if (result.message === "you're logged in!") {
+        
+        if (result.message === "you're logged in! ") {
+          dataDump = result.customer
+          document.cookie = result.customer.id
+          setCurrentUser(dataDump)
+          
           alert(result.message);
+          
           setAuthorized(result.token);
           setLoggedIn(result.token);
-          setAdmin(result.token);
+          setAdmin(result.customer.isAdmin);
           storeToken(result.token);
+          
+          
+
+
         } else {
           alert(result.message);
         }
+        
       })
+     
       .catch(console.error);
   };
   if (loggedIn) {
-    return <Redirect to="/" />;
+    console.log(currentUser)
+    return <Redirect to="/listings" />;
   } else {
     return (
       <form onSubmit={handleSubmit}>

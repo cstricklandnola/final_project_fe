@@ -4,95 +4,7 @@ import { Redirect } from "react-router-dom";
 
 import Button from "react-bootstrap/Button";
 
-//||****************************************************||Delete whatever is contained in this ****************************************************||
-const dummyDatabase = [
-  {
-    itemId: 1,
-    isActive: true,
-    name: "First Item",
-    description: "This is a description",
-    cost: 10.99,
-    featured: false,
-    onHand: 20,
-    keywords: ["car", "engine"],
-    category: "cars",
-    photos: [
-      "http://placekitten.com/200/287",
-      "http://placekitten.com/200/299",
-      "http://placekitten.com/200/300",
-    ],
-    reviews: ["reviewId"],
-  },
-  {
-    itemId: 2,
-    isActive: true,
-    name: "Second Item",
-    description: "This is a second description",
-    cost: 1.99,
-    featured: false,
-    onHand: 20,
-    keywords: ["car", "engine"],
-    category: "televisions",
-    photos: [
-      "http://placekitten.com/200/227",
-      "http://placekitten.com/200/199",
-      "http://placekitten.com/200/111",
-    ],
-    reviews: ["reviewId"],
-  },
-  {
-    itemId: 3,
-    isActive: true,
-    name: "Third Item",
-    description: "This is a second description",
-    cost: 1.99,
-    featured: false,
-    onHand: 20,
-    keywords: ["car", "engine"],
-    category: "televisions",
-    photos: [
-      "http://placekitten.com/200/199",
-      "http://placekitten.com/200/199",
-      "http://placekitten.com/200/111",
-    ],
-    reviews: ["reviewId"],
-  },
-  {
-    itemId: 4,
-    isActive: true,
-    name: "Fourth Item",
-    description: "This is a second description",
-    cost: 1.99,
-    featured: false,
-    onHand: 20,
-    keywords: ["car", "engine"],
-    category: "televisions",
-    photos: [
-      "http://placekitten.com/200/105",
-      "http://placekitten.com/200/199",
-      "http://placekitten.com/200/111",
-    ],
-    reviews: ["reviewId"],
-  },
-  {
-    itemId: 5,
-    isActive: true,
-    name: "Fifth Item",
-    description: "This is a second description",
-    cost: 1.99,
-    featured: false,
-    onHand: 20,
-    keywords: ["car", "engine"],
-    category: "televisions",
-    photos: [
-      "http://placekitten.com/200/205",
-      "http://placekitten.com/200/199",
-      "http://placekitten.com/200/111",
-    ],
-    reviews: ["reviewId"],
-  },
-];
-//**************************************************** Delete whatever is contained in this ****************************************************||
+
 
 const ManageSelectedListing = (props) => {
   const { selectedListing, admin } = props;
@@ -126,25 +38,25 @@ const ManageSelectedListing = (props) => {
       } else {
         finalPayload.description = listingPayload.description;
       }
-      if (!listingPayload.cost) {
-        finalPayload.cost = selectedListing.cost;
+      if (!listingPayload.price) {
+        finalPayload.price = selectedListing.price;
       } else {
-        finalPayload.cost = listingPayload.cost;
+        finalPayload.price = listingPayload.price;
       }
       if (!listingPayload.description) {
         finalPayload.description = selectedListing.description;
       } else {
         finalPayload.description = listingPayload.description;
       }
-      if (!listingPayload.onHand) {
-        finalPayload.onHand = selectedListing.onHand;
+      if (!listingPayload.stock) {
+        finalPayload.stock = selectedListing.stock;
       } else {
-        finalPayload.onHand = listingPayload.onHand;
+        finalPayload.stock = listingPayload.stock;
       }
-      if (!listingPayload.photos) {
-        finalPayload.photos = selectedListing.photos;
+      if (!listingPayload.img) {
+        finalPayload.img = selectedListing.img;
       } else {
-        finalPayload.photos = listingPayload.photos;
+        finalPayload.img = listingPayload.img;
       }
       if (!listingPayload.featured) {
         finalPayload.featured = selectedListing.featured;
@@ -165,7 +77,7 @@ const ManageSelectedListing = (props) => {
     <div>
       <h1>Welcome to The Modify Listing Page:</h1>
       <h2>{selectedListing.name}</h2>
-      <h3>itemId: {selectedListing.itemId}</h3>
+      <h3>itemId: {selectedListing.id}</h3>
 
       <label>isActive: </label>
       <input
@@ -197,33 +109,33 @@ const ManageSelectedListing = (props) => {
         }
       />
       <p></p>
-      <label>Cost: </label>
+      <label>Price: </label>
       <input
-        name="cost"
+        name="price"
         required
-        defaultValue={selectedListing.cost}
+        defaultValue={selectedListing.price}
         onChange={(e) =>
-          setListingPayload({ ...listingPayload, cost: e.target.value })
+          setListingPayload({ ...listingPayload, price: e.target.value })
         }
       />
       <p></p>
-      <label>On Hand: </label>
+      <label>Stock: </label>
       <input
-        name="onHand"
+        name="stock"
         required
-        defaultValue={selectedListing.onHand}
+        defaultValue={selectedListing.stock}
         onChange={(e) =>
-          setListingPayload({ ...listingPayload, onHand: e.target.value })
+          setListingPayload({ ...listingPayload, stock: e.target.value })
         }
       />
       <p></p>
-      <label>Photos:</label>
+      <label>Image:</label>
       <input
-        name="photos"
+        name="image"
         required
-        defaultValue={selectedListing.photos}
+        defaultValue={selectedListing.img}
         onChange={(e) =>
-          setListingPayload({ ...listingPayload, photos: e.target.value })
+          setListingPayload({ ...listingPayload, img: e.target.value })
         }
       />
       <p></p>
