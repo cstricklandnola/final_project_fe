@@ -39,7 +39,8 @@ const App = () => {
 
   const [products, setProducts] = useState([]);
   
-
+  const [guestCart, setGuestCart] = useState([])
+  // Holds cart for User who isn't logged in.
 
   useEffect(() => {
     axios
@@ -76,6 +77,8 @@ const App = () => {
             ) : null}
             <Nav.Link href="/ShoppingCart"
             currentUser = {currentUser}
+            guestCart = {guestCart}
+            setGuestCart = {setGuestCart}
             >Shopping Cart</Nav.Link>
           </Nav>
 
@@ -91,7 +94,8 @@ const App = () => {
                 className="Link"
                 onClick={() => {
                   clearToken();
-
+                  document.cookie = 0
+                  console.log(document.cookie)
                   setLoggedIn(null);
                   setAuthorized(null);
                   setCurrentUser(null);
@@ -116,6 +120,9 @@ const App = () => {
               setOrderStarted={setOrderStarted}
               products = {products}
               currentUser = {currentUser}
+              guestCart = {guestCart}
+              setGuestCart = {setGuestCart}
+              
             />
           </Route>
           <Route path="/ManageUsers">
@@ -139,6 +146,8 @@ const App = () => {
               authorized={authorized}
               setAdmin={setAdmin}
               currentUser = {currentUser}
+              guestCart = {guestCart}
+              setGuestCart = {setGuestCart}
 
               
             />
@@ -149,6 +158,8 @@ const App = () => {
               loggedIn={loggedIn}
               setLoggedIn={setLoggedIn}
               currentUser = {currentUser}
+              guestCart = {guestCart}
+              setGuestCart = {setGuestCart}
             />
           </Route>
           <Route path="/Listings">
@@ -162,6 +173,8 @@ const App = () => {
               setOrderStarted={setOrderStarted}
               products = {products}
               setProducts = {setProducts}
+              guestCart = {guestCart}
+              setGuestCart = {setGuestCart}
              
             />
           </Route>
@@ -183,6 +196,8 @@ const App = () => {
               currentUser = {currentUser}
               products = {products}
               setProducts = {setProducts}
+              guestCart = {guestCart}
+              setGuestCart = {setGuestCart}
             />
           </Route>
           <Route path="/ManageListings">

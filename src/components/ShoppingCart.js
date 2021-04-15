@@ -8,10 +8,13 @@ import Button from "react-bootstrap/Button";
 
 const ShoppingCart = (props) => {
   const userKey = document.cookie;
-  const { products, setProducts } = props;
+  const { products, setProducts, guestCart, setGuestCart } = props;
   const [deletedItems, setDeletedItems] = useState(0);
 
   const [shoppingCart, setShoppingCart] = useState("");
+  
+
+  console.log(JSON.parse(localStorage.getItem('cart')))
 
   
 

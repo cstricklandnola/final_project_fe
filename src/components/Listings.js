@@ -4,12 +4,11 @@ import Button from "react-bootstrap/Button";
 import { getToken } from "../auth";
 import { Redirect } from "react-router-dom";
 import { CardColumns } from "react-bootstrap";
-import { fetchAllProducts } from "../api/index";
 import Spinner from "react-bootstrap/Spinner";
 import axios from "axios";
 
 const Listings = (props) => {
-  const { orderStarted, setOrderStarted, setProducts, products, currentUser } = props;
+  const { orderStarted, setOrderStarted, setProducts, products, currentUser,guestCart, setGuestCart } = props;
   const userKey = document.cookie
   const token = getToken()
   // OrderedStarted is state to determine if a cart has already been made for the user.
@@ -27,6 +26,22 @@ const Listings = (props) => {
       //Check state to see if an order has been started. If it hasn't been, start a new order. If it has been, add item.
       
         //orders/
+        //Is logged? No. Add this to the State Array that we have for a Guest.
+        
+        if(userKey == 0){
+          //make array!
+          let tempArray = guestCart
+          
+          tempArray.push(item)
+          setGuestCart(tempArray)
+          localStorage.setItem('cart', JSON.stringify({
+            guestCart
+        }))
+          
+          
+        }
+          
+        else {
 
         axios.post ("https://intense-lowlands-29407.herokuapp.com/api/orders/",
         {orderId: userKey,
@@ -38,7 +53,7 @@ const Listings = (props) => {
         .then((response) => console.log(response))
 
         
-        ;
+        ;}
       
     } catch (error) {
       console.error(error);
