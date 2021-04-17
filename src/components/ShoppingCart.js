@@ -1,145 +1,190 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { Redirect } from "react-router-dom";
+import Table from "react-bootstrap/Table";
+import Button from "react-bootstrap/Button";
+import { getToken } from "../auth";
+const token = getToken();
 
-import { storeToken } from "../auth";
-import {Redirect} from "react-router-dom"
+const ShoppingCart = (props) => {
+  const userKey = document.cookie;
+  let finalCart = [];
+  const [deletedItems, setDeletedItems] = useState(0);
 
-import Button from 'react-bootstrap/Button';
+  const [shoppingCart, setShoppingCart] = useState("");
 
-const handleSubmitRemoveFromCart = async (item) => {
-  try {
-    alert("ItemId: "+ item.itemId + " was removed from the cart.");
-  } catch (error) {
-    console.error(error);
-  }
-};
+  const handleSubmitRemoveFromCart = async (serialno) => {
+    try {
+      setDeletedItems(true);
 
-const ShoppingCart = () => {
-
-  //||****************************************************Delete whatever is contained in this ****************************************************||
-  const dummyDatabase = [
-    {
-      itemId: 1,
-      isActive: true,
-      name: "First Item",
-      description: "This is a description",
-      cost: 10.99,
-      featured: false,
-      onHand: 20,
-      keywords: ["car", "engine"],
-      category: "cars",
-      photos: [
-        "http://placekitten.com/200/287",
-        "http://placekitten.com/200/299",
-        "http://placekitten.com/200/300",
-      ],
-      reviews: ["reviewId"],
-    },
-    {
-      itemId: 2,
-      isActive: true,
-      name: "Second Item",
-      description: "This is a second description",
-      cost: 1.99,
-      featured: false,
-      onHand: 20,
-      keywords: ["car", "engine"],
-      category: "televisions",
-      photos: [
-        "http://placekitten.com/200/227",
-        "http://placekitten.com/200/199",
-        "http://placekitten.com/200/111",
-      ],
-      reviews: ["reviewId"],
-    },
-    {
-      itemId: 3,
-      isActive: true,
-      name: "Third Item",
-      description: "This is a second description",
-      cost: 1.99,
-      featured: false,
-      onHand: 20,
-      keywords: ["car", "engine"],
-      category: "televisions",
-      photos: [
-        "http://placekitten.com/200/199",
-        "http://placekitten.com/200/199",
-        "http://placekitten.com/200/111",
-      ],
-      reviews: ["reviewId"],
-    },
-    {
-      itemId: 4,
-      isActive: true,
-      name: "Fourth Item",
-      description: "This is a second description",
-      cost: 1.99,
-      featured: false,
-      onHand: 20,
-      keywords: ["car", "engine"],
-      category: "televisions",
-      photos: [
-        "http://placekitten.com/200/105",
-        "http://placekitten.com/200/199",
-        "http://placekitten.com/200/111",
-      ],
-      reviews: ["reviewId"],
-    },
-    {
-      itemId: 5,
-      isActive: true,
-      name: "Fifth Item",
-      description: "This is a second description",
-      cost: 1.99,
-      featured: false,
-      onHand: 20,
-      keywords: ["car", "engine"],
-      category: "televisions",
-      photos: [
-        "http://placekitten.com/200/205",
-        "http://placekitten.com/200/199",
-        "http://placekitten.com/200/111",
-      ],
-      reviews: ["reviewId"],
+      axios.delete(
+        `https://intense-lowlands-29407.herokuapp.com/api/shopping_cart/${serialno}`
+      );
+    } catch (error) {
+      console.error(error);
     }
-  ];
+  };
+  const handleSubmitOrder = async () => {
+    try {
+      alert("We are submitting the order.");
+      console.log("Attention below.");
+      console.log(finalCart);
+      finalCart.forEach((product) => {
+        try {
+          axios.post(
+            "https://intense-lowlands-29407.herokuapp.com/api/orders/checkout",
+            {
+              orderId: 5,
+              productId: 2,
+              username: localStorage.getItem("customerUserName"),
+              email: localStorage.getItem("customerEmail"),
+              status: "submitted",
+              quantity: product.quantity,
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+        } catch (error) {
+          console.error(error);
+        }
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const handleDeleteOrder = async (orderId) => {
+    try {
+      alert("We are deleting your cart.");
 
-  
+      axios.delete(
+        `https://intense-lowlands-29407.herokuapp.com/api/orders/${orderId}`
+      );
 
-  const currentOrder = 
-    {     
-       order: [
-          {itemId:1, 
-          count: 2},
+      setShoppingCart("redirect");
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-          {itemId:3, 
-            count: 4},
-        ]
-      }
-//**************************************************** Delete whatever is contained in this ****************************************************||
-  
-  
-  //Filters based off Active or Not.
-  const filterResults = dummyDatabase.filter(function (dummy) {
-    return dummy.isActive === true;})
- 
-    
+  useEffect(async () => {
+    setDeletedItems(false);
+    axios
+      .get(
+        `https://intense-lowlands-29407.herokuapp.com/api/shopping_cart/${userKey}`
+      )
+      .then((response) => setShoppingCart(response.data));
+  }, [deletedItems]);
 
-  return (
-    <div>
-      <h1>Welcome to Your Shopping Cart:</h1>
-      <h3>This is waiting for the back end to be finished to be fancy.</h3>
-      <div className="results">
-      {currentOrder.order.map((item) => (
-        <li>Item: {item.itemId} Count: {item.count} <Button type="submit" onClick={() => handleSubmitRemoveFromCart(item)}>Remove Item</Button></li> 
+  let price = 0;
+  ///Math for pricing.
 
-       
-    ))}
-     
-               
+  if (shoppingCart[0] === undefined) {
+    return (
+      <>
+        <h1>Welcome to Your Shopping Cart:</h1>
+        <h3>Your cart is currently empty, or being fetched.</h3>
+        <img src="https://aestheticsforbirds.files.wordpress.com/2020/03/artworld.jpg?w=463&h=349"></img>
+      </>
+    );
+  } else if (shoppingCart === "redirect") {
+    return <Redirect to="/listings" />;
+  } else {
+    shoppingCart.forEach((item) => {
+      //This removes the $ from the price key.
+      var g = item.price;
+      g = g.replace(/\$/g, "");
+      g = parseFloat(g);
+      price = price + g * item.quantity;
+    });
+
+    let tempCart = shoppingCart;
+
+    if (tempCart[0]?.productId === undefined) {
+    } else {
+      //This goes through the cart and creates a new object that adds an accumulator for the quantity
+      //anytime that the id is repeated.
+      finalCart = Object.values(
+        tempCart.reduce((acc, v) => {
+          if (!acc[v.id]) {
+            acc[v.id] = {
+              id: v.id,
+              productId: v.productId,
+              quantity: 0,
+              price: v.price,
+              name: v.name,
+              serialno: v.serialno,
+            };
+          }
+          acc[v.id].quantity += v.quantity;
+          return acc;
+        }, {})
+      );
+    }
+
+    return (
+      <div>
+        <h1>Welcome to Your Shopping Cart:</h1>
+        <h3>This is waiting for the back end to be finished to be fancy.</h3>
+        <div className="results"></div>
+        <Table striped bordered hover>
+          <thead>
+            <tr>
+              <th>Item ID</th>
+              <th>Product Name</th>
+              <th>Count</th>
+              <th>Price</th>
+              <th>Functions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {finalCart.map((item) => (
+              <tr>
+                <td>{item.id}</td>
+                <td>{item.name}</td>
+                <td>{item.quantity}</td>
+                <td>{item.price}</td>
+
+                <td>
+                  <Button
+                    type="submit"
+                    onClick={() => handleSubmitRemoveFromCart(item.serialno)}
+                  >
+                    Remove Item
+                  </Button>{" "}
+                </td>
+              </tr>
+            ))}
+            <tr>
+              <th></th>
+              <th></th>
+              <th>Total Price:</th>
+              <th>${price.toFixed(2)}</th>
+              <th>
+                {" "}
+                <Button
+                  variant="success"
+                  type="submit"
+                  onClick={() => handleSubmitOrder()}
+                >
+                  Check Out
+                </Button>
+                <Button
+                  variant="danger"
+                  type="submit"
+                  onClick={() => handleDeleteOrder(shoppingCart[0].orderId)}
+                >
+                  Delete Order
+                </Button>
+              </th>
+            </tr>
+          </tbody>
+        </Table>
       </div>
-    </div>
-  );
+    );
+  }
 };
 
 export default ShoppingCart;

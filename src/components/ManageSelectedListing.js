@@ -1,109 +1,20 @@
-import React, { useState, useEffect } from "react";
-import { storeToken } from "../auth";
-import { Redirect } from "react-router-dom";
-
+import React, { useState } from "react";
+import axios from "axios";
 import Button from "react-bootstrap/Button";
-
-//||****************************************************||Delete whatever is contained in this ****************************************************||
-const dummyDatabase = [
-  {
-    itemId: 1,
-    isActive: true,
-    name: "First Item",
-    description: "This is a description",
-    cost: 10.99,
-    featured: false,
-    onHand: 20,
-    keywords: ["car", "engine"],
-    category: "cars",
-    photos: [
-      "http://placekitten.com/200/287",
-      "http://placekitten.com/200/299",
-      "http://placekitten.com/200/300",
-    ],
-    reviews: ["reviewId"],
-  },
-  {
-    itemId: 2,
-    isActive: true,
-    name: "Second Item",
-    description: "This is a second description",
-    cost: 1.99,
-    featured: false,
-    onHand: 20,
-    keywords: ["car", "engine"],
-    category: "televisions",
-    photos: [
-      "http://placekitten.com/200/227",
-      "http://placekitten.com/200/199",
-      "http://placekitten.com/200/111",
-    ],
-    reviews: ["reviewId"],
-  },
-  {
-    itemId: 3,
-    isActive: true,
-    name: "Third Item",
-    description: "This is a second description",
-    cost: 1.99,
-    featured: false,
-    onHand: 20,
-    keywords: ["car", "engine"],
-    category: "televisions",
-    photos: [
-      "http://placekitten.com/200/199",
-      "http://placekitten.com/200/199",
-      "http://placekitten.com/200/111",
-    ],
-    reviews: ["reviewId"],
-  },
-  {
-    itemId: 4,
-    isActive: true,
-    name: "Fourth Item",
-    description: "This is a second description",
-    cost: 1.99,
-    featured: false,
-    onHand: 20,
-    keywords: ["car", "engine"],
-    category: "televisions",
-    photos: [
-      "http://placekitten.com/200/105",
-      "http://placekitten.com/200/199",
-      "http://placekitten.com/200/111",
-    ],
-    reviews: ["reviewId"],
-  },
-  {
-    itemId: 5,
-    isActive: true,
-    name: "Fifth Item",
-    description: "This is a second description",
-    cost: 1.99,
-    featured: false,
-    onHand: 20,
-    keywords: ["car", "engine"],
-    category: "televisions",
-    photos: [
-      "http://placekitten.com/200/205",
-      "http://placekitten.com/200/199",
-      "http://placekitten.com/200/111",
-    ],
-    reviews: ["reviewId"],
-  },
-];
-//**************************************************** Delete whatever is contained in this ****************************************************||
+import { Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { getToken } from "../auth";
+const token = getToken();
 
 const ManageSelectedListing = (props) => {
   const { selectedListing, admin } = props;
-   // SelectedListing is used to push the data from ManageListing to ManageSelectedListing. 
+  // SelectedListing is used to push the data from ManageListing to ManageSelectedListing.
   const [listingPayload, setListingPayload] = useState({});
   // ListingPayload is used to set the data needed for a Patch to the server.
-  
+  const [changesMade, setChangesMade] = useState();
   // if(!admin){
   // This is the check to prevent non admins from even seeing the page.
   //   return <Redirect to="/" />}
-  
 
   const handleCommitChanges = async () => {
     try {
@@ -121,37 +32,65 @@ const ManageSelectedListing = (props) => {
       } else {
         finalPayload.name = listingPayload.name;
       }
-      if (!listingPayload.description) {
-        finalPayload.description = selectedListing.description;
+      if (!listingPayload.artist) {
+        finalPayload.artist = selectedListing.artist;
       } else {
-        finalPayload.description = listingPayload.description;
-      }
-      if (!listingPayload.cost) {
-        finalPayload.cost = selectedListing.cost;
-      } else {
-        finalPayload.cost = listingPayload.cost;
+        finalPayload.artist = listingPayload.artist;
       }
       if (!listingPayload.description) {
         finalPayload.description = selectedListing.description;
       } else {
         finalPayload.description = listingPayload.description;
       }
-      if (!listingPayload.onHand) {
-        finalPayload.onHand = selectedListing.onHand;
+      if (!listingPayload.price) {
+        finalPayload.price = selectedListing.price;
       } else {
-        finalPayload.onHand = listingPayload.onHand;
+        finalPayload.price = listingPayload.price;
       }
-      if (!listingPayload.photos) {
-        finalPayload.photos = selectedListing.photos;
+      if (!listingPayload.description) {
+        finalPayload.description = selectedListing.description;
       } else {
-        finalPayload.photos = listingPayload.photos;
+        finalPayload.description = listingPayload.description;
+      }
+      if (!listingPayload.stock) {
+        finalPayload.stock = selectedListing.stock;
+      } else {
+        finalPayload.stock = listingPayload.stock;
+      }
+      if (!listingPayload.img) {
+        finalPayload.img = selectedListing.img;
+      } else {
+        finalPayload.img = listingPayload.img;
       }
       if (!listingPayload.featured) {
         finalPayload.featured = selectedListing.featured;
       } else {
         finalPayload.featured = listingPayload.featured;
       }
-      console.log(finalPayload);
+     
+
+      axios
+        .patch(
+          `https://intense-lowlands-29407.herokuapp.com/api/admin/${selectedListing.id}`,
+          {
+            name: finalPayload.name,
+            artist: finalPayload.artist,
+            featured: finalPayload.featured,
+            price: finalPayload.price,
+            description: finalPayload.description,
+            isActive: finalPayload.isActive,
+            img: finalPayload.img,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        )
+        setChangesMade("Changes have been saved.")
+      
+        
     } catch (error) {
       console.error(error);
     }
@@ -165,7 +104,7 @@ const ManageSelectedListing = (props) => {
     <div>
       <h1>Welcome to The Modify Listing Page:</h1>
       <h2>{selectedListing.name}</h2>
-      <h3>itemId: {selectedListing.itemId}</h3>
+      <h3>itemId: {selectedListing.id}</h3>
 
       <label>isActive: </label>
       <input
@@ -187,6 +126,16 @@ const ManageSelectedListing = (props) => {
         }
       />
       <p></p>
+      <label>Artist: </label>
+      <input
+        name="artist"
+        required
+        defaultValue={selectedListing.artist}
+        onChange={(e) =>
+          setListingPayload({ ...listingPayload, artist: e.target.value })
+        }
+      />
+      <p></p>
       <label>Description: </label>
       <input
         name="description"
@@ -197,33 +146,33 @@ const ManageSelectedListing = (props) => {
         }
       />
       <p></p>
-      <label>Cost: </label>
+      <label>Price: </label>
       <input
-        name="cost"
+        name="price"
         required
-        defaultValue={selectedListing.cost}
+        defaultValue={selectedListing.price}
         onChange={(e) =>
-          setListingPayload({ ...listingPayload, cost: e.target.value })
+          setListingPayload({ ...listingPayload, price: e.target.value })
         }
       />
       <p></p>
-      <label>On Hand: </label>
+      <label>Stock: </label>
       <input
-        name="onHand"
+        name="stock"
         required
-        defaultValue={selectedListing.onHand}
+        defaultValue={selectedListing.stock}
         onChange={(e) =>
-          setListingPayload({ ...listingPayload, onHand: e.target.value })
+          setListingPayload({ ...listingPayload, stock: e.target.value })
         }
       />
       <p></p>
-      <label>Photos:</label>
+      <label>Image:</label>
       <input
-        name="photos"
+        name="image"
         required
-        defaultValue={selectedListing.photos}
+        defaultValue={selectedListing.img}
         onChange={(e) =>
-          setListingPayload({ ...listingPayload, photos: e.target.value })
+          setListingPayload({ ...listingPayload, img: e.target.value })
         }
       />
       <p></p>
@@ -240,11 +189,19 @@ const ManageSelectedListing = (props) => {
 
       <Button
         type="button"
-        variant="secondary"
+        variant="success"
         onClick={() => handleCommitChanges()}
       >
         Commit Changes
       </Button>
+      <Link to="/ManageListings"><Button
+        type="button"
+        variant="warning"
+        onClick={() => handleCommitChanges()}
+      >
+        Return to Listings
+      </Button></Link>
+      <p></p> {changesMade}
     </div>
   );
 };
