@@ -3,24 +3,9 @@ import { getToken } from "../auth";
 import { Link } from "react-router-dom";
 import Card from "react-bootstrap/Card";
 import { CardColumns } from "react-bootstrap";
-import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import axios from "axios";
 import Spinner from "react-bootstrap/Spinner";
-
-
-
-// const handleSelectUser = async (value, setSelectedUser, selectedUser) => {
-//   try {
-//     const filterResults2 = dummyUserDataBase.filter(function (dummy) {
-//       return dummy.username === value;
-//     });
-//     setSelectedUser(...filterResults2);
-//     console.log(selectedUser);
-//   } catch (error) {
-//     console.error(error);
-//   }
-// };
 
 const token = getToken();
 
@@ -63,7 +48,7 @@ const ManageUsers = (props) => {
   const filterResults = () => {
     //This filters our results! Name -> Cost.
     let resultsFilter = userData;
-    console.log(userData)
+    console.log(userData);
     if (filteredUserList.username) {
       resultsFilter = resultsFilter.filter(function (dummy) {
         return dummy.username
@@ -82,81 +67,85 @@ const ManageUsers = (props) => {
   if (userData[0]?.username === undefined) {
     return (
       <>
-      <h1>Welcome to The User Database:</h1>
+        <h1>Welcome to The User Database:</h1>
         <Spinner animation="border" role="status">
           <span className="sr-only">Loading...</span>
         </Spinner>
       </>
     );
   } else {
-  return (
-    <div>
-      <h1>Welcome to The User Database:</h1>
-      <label>Username Search:</label>
-      <input
-        type="text"
-        onChange={(e) =>
-          setFilteredUserList({ ...filteredUserList, username: e.target.value })
-        }
-      />
-      <label>E-Mail Search:</label>
-      <input
-        type="text"
-        onChange={(e) =>
-          setFilteredUserList({ ...filteredUserList, email: e.target.value })
-        }
-      />
+    return (
+      <div>
+        <h1>Welcome to The User Database:</h1>
+        <label>Username Search:</label>
+        <input
+          type="text"
+          onChange={(e) =>
+            setFilteredUserList({
+              ...filteredUserList,
+              username: e.target.value,
+            })
+          }
+        />
+        <label>E-Mail Search:</label>
+        <input
+          type="text"
+          onChange={(e) =>
+            setFilteredUserList({ ...filteredUserList, email: e.target.value })
+          }
+        />
 
-      <div className="results">
-        <div className="users">
-          <CardColumns>
-            {filterResults()?.map((user, index) => {
-              return (
-                <Card style={{ width: "18rem" }} className="mb-2">
-                  <Card.Body>
-                    <Card.Text>
-                      <li>
-                        <b>UserId:</b> {user.id}
-                      </li>
-                      <li>
-                        <b>Username:</b> {user.username}
-                      </li>
-                      <li>
-                        <b>Email:</b> {user.email}
-                      </li>
-                      <li>
-                        <b>IsActive:</b> {user.isActive}
-                      </li>
-                      <li>
-                        <b>Previous Orders:</b>
-                        {user.uniqueOrderId}
-                      </li>
+        <div className="results">
+          <div className="users">
+            <CardColumns>
+              {filterResults()?.map((user, index) => {
+                return (
+                  <Card style={{ width: "18rem" }} className="mb-2">
+                    <Card.Body>
+                      <Card.Text>
+                        <li>
+                          <b>UserId:</b> {user.id}
+                        </li>
+                        <li>
+                          <b>Username:</b> {user.username}
+                        </li>
+                        <li>
+                          <b>Email:</b> {user.email}
+                        </li>
+                        <li>
+                          <b>IsActive:</b> {user.isActive}
+                        </li>
+                        <li>
+                          <b>Previous Orders:</b>
+                          {user.uniqueOrderId}
+                        </li>
 
-                      <Link to="/ManageSelectedUser">
+                        <Link to="/ManageSelectedUser">
+                          <Button
+                            type="button"
+                            onClick={() => setSelectedUser(user)}
+                          >
+                            Modify User
+                          </Button>
+                        </Link>
                         <Button
                           type="button"
-                          onClick={() => setSelectedUser(user)}
+                          variant="secondary"
+                          onClick={() => handlePreviousOrders(user)}
                         >
-                          Modify User
+                          See Previous Orders
                         </Button>
-                      </Link>
-                      <Button
-                        type="button"
-                        variant="secondary"
-                        onClick={() => handlePreviousOrders(user)}
-                      >
-                        See Previous Orders
-                      </Button>
-                    </Card.Text>
-                  </Card.Body>
-                </Card>
-              );
-            })}
-          </CardColumns>
+                      </Card.Text>
+                    </Card.Body>
+                  </Card>
+                );
+              })}
+            </CardColumns>
+          </div>
         </div>
       </div>
-    </div>
-  );
-};}
+    );
+  }
+};
 
 export default ManageUsers;

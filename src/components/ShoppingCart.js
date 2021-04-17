@@ -1,24 +1,20 @@
 import React, { useState, useEffect } from "react";
-import Spinner from "react-bootstrap/Spinner";
 import axios from "axios";
-import { storeToken } from "../auth";
 import { Redirect } from "react-router-dom";
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
 
 const ShoppingCart = (props) => {
   const userKey = document.cookie;
-  const { products, setProducts, guestCart, setGuestCart } = props;
+  
   const [deletedItems, setDeletedItems] = useState(0);
 
   const [shoppingCart, setShoppingCart] = useState("");
-  
-
-  
 
   const handleSubmitRemoveFromCart = async (serialno) => {
     try {
       setDeletedItems(true);
+      console.log(serialno);
 
       axios
 
@@ -69,16 +65,17 @@ const ShoppingCart = (props) => {
     return (
       <>
         <h1>Welcome to Your Shopping Cart:</h1>
-        <Spinner animation="border" role="status">
-          <span className="sr-only">Loading...</span>
-        </Spinner>
+
+        <h3>Your cart is currently empty, or being fetched.</h3>
+        <img
+          src="https://aestheticsforbirds.files.wordpress.com/2020/03/artworld.jpg?w=463&h=349"
+          alt="W3Schools.com"
+        ></img>
       </>
     );
   } else if (shoppingCart === "redirect") {
-    
     return <Redirect to="/listings" />;
   } else {
-    
     shoppingCart.forEach((item) => {
       //This removes the $ from the price key.
       var g = item.price;
@@ -86,33 +83,32 @@ const ShoppingCart = (props) => {
       g = parseFloat(g);
       price = price + g * item.quantity;
     });
-    let tempVar = []
 
-  
-  let tempCart = shoppingCart
-  let finalCart = []
-  
-  
+    let tempCart = shoppingCart;
+    let finalCart = [];
 
-  if(tempCart[0]?.productId === undefined){
-  console.log ("NOPE!")}
-  else {
-    //This goes through the cart and creates a new object that adds an accumulator for the quantity
-    //anytime that the id is repeated.
-    finalCart = Object.values(tempCart.reduce((acc, v) => {
-      if (!acc[v.id]) {
-          acc[v.id] = {id: v.id, quantity: 0, price: v.price, name: v.name};
-      }
-      acc[v.id].quantity += v.quantity;
-      return acc;
-   }, {}));
-    console.log(finalCart)}
-
-
-  
-
-
-  
+    if (tempCart[0]?.productId === undefined) {
+      console.log("NOPE!");
+    } else {
+      //This goes through the cart and creates a new object that adds an accumulator for the quantity
+      //anytime that the id is repeated.
+      finalCart = Object.values(
+        tempCart.reduce((acc, v) => {
+          if (!acc[v.id]) {
+            acc[v.id] = {
+              id: v.id,
+              quantity: 0,
+              price: v.price,
+              name: v.name,
+              serialno: v.serialno,
+            };
+          }
+          acc[v.id].quantity += v.quantity;
+          return acc;
+        }, {})
+      );
+      console.log(finalCart);
+    }
 
     return (
       <div>

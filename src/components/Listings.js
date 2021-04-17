@@ -2,15 +2,14 @@ import React, { useState, useEffect } from "react";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import { getToken } from "../auth";
-import { Redirect } from "react-router-dom";
 import { CardColumns } from "react-bootstrap";
 import Spinner from "react-bootstrap/Spinner";
 import axios from "axios";
 
 const Listings = (props) => {
-  const { orderStarted, setOrderStarted, setProducts, products, currentUser,guestCart, setGuestCart } = props;
-  const userKey = document.cookie
-  const token = getToken()
+  const { setProducts, products, guestCart, setGuestCart } = props;
+  const userKey = document.cookie;
+  const token = getToken();
   // OrderedStarted is state to determine if a cart has already been made for the user.
   const [searchItem, setSearchItem] = useState("");
   // SearchItem is used to determine what the user wants to search for. This is an object that also works with the slider for Cost.
@@ -24,37 +23,31 @@ const Listings = (props) => {
   const handleSubmitAddToCart = async (item) => {
     try {
       //Check state to see if an order has been started. If it hasn't been, start a new order. If it has been, add item.
-      
-        //orders/
-        //Is logged? No. Add this to the State Array that we have for a Guest.
-        
-        if(userKey == 0){
-          //make array!
-          let tempArray = guestCart
-          
-          tempArray.push(item)
-          setGuestCart(tempArray)
-          localStorage.setItem('cart', JSON.stringify({
-            guestCart
-        }))
-          
-          
-        }
-          
-        else {
 
-        axios.post ("https://intense-lowlands-29407.herokuapp.com/api/orders/",
-        {orderId: userKey,
-        productId: item.id,
-        status: "Processing",
-        quantity: "1",
-        
-        })
-        .then((response) => console.log(response))
+      //orders/
 
-        
-        ;}
-      
+      if (userKey == 0) {
+        //make array!
+        let tempArray = guestCart;
+
+        tempArray.push(item);
+        setGuestCart(tempArray);
+        localStorage.setItem(
+          "cart",
+          JSON.stringify({
+            guestCart,
+          })
+        );
+      } else {
+        axios
+          .post("https://intense-lowlands-29407.herokuapp.com/api/orders/", {
+            orderId: userKey,
+            productId: item.id,
+            status: "Processing",
+            quantity: "1",
+          })
+          .then((response) => console.log(response));
+      }
     } catch (error) {
       console.error(error);
     }
@@ -93,14 +86,14 @@ const Listings = (props) => {
             .includes(searchItem.name.toLowerCase());
         });
       }
-      
+
       if (searchItem.price) {
         resultsFilter = resultsFilter.filter(function (dummy) {
           //Magic to make $ disappear.
-          var g = dummy.price
-          g = g.replace(/\$/g,"")
-          g = parseFloat(g)
-          
+          var g = dummy.price;
+          g = g.replace(/\$/g, "");
+          g = parseFloat(g);
+
           return g < parseInt(searchItem.price);
         });
       }
@@ -112,14 +105,13 @@ const Listings = (props) => {
   if (products[0] === undefined) {
     return (
       <>
-      <h1>Welcome to The Shop Listings:</h1>
+        <h1>Welcome to The Shop Listings:</h1>
         <Spinner animation="border" role="status">
           <span className="sr-only">Loading...</span>
         </Spinner>
       </>
     );
   } else {
-    
     return (
       <div>
         <h1>Welcome to The Shop Listings:</h1>
@@ -155,7 +147,7 @@ const Listings = (props) => {
                       <li>
                         <b>Description:</b> {item.description}
                       </li>
-                      
+
                       <Button
                         type="button"
                         onClick={() => handleSubmitAddToCart(item)}

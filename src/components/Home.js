@@ -1,13 +1,12 @@
 import Carousel from "react-bootstrap/Carousel";
-import Card from "react-bootstrap/Card";
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 
 const Home = (props) => {
   const { orderStarted, setOrderStarted, products } = props;
-  
-  console.log(products)
+
+  console.log(products);
 
   const handleSubmitAddToCart = async (item) => {
     try {
@@ -23,7 +22,7 @@ const Home = (props) => {
     }
   };
   //||**************************************************** Delete whatever is contained in this ****************************************************||
-  
+
   //||**************************************************** Delete whatever is contained in this ****************************************************||
   const filterResults = products.filter(function (dummy) {
     return dummy.isActive === true && dummy.featured === true;

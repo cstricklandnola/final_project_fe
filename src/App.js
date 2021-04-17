@@ -2,14 +2,11 @@ import "./App.css";
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Link, Switch, Route } from "react-router-dom";
 import { getToken, clearToken } from "./auth";
-import { fetchAllProducts } from "./api";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
-import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import FormControl from "react-bootstrap/Form";
 import NavDropdown from "react-bootstrap/NavDropdown";
-import axios from 'axios'
+import axios from "axios";
 
 import {
   CreateListing,
@@ -38,18 +35,15 @@ const App = () => {
   const [orderStarted, setOrderStarted] = useState("");
 
   const [products, setProducts] = useState([]);
-  
-  const [guestCart, setGuestCart] = useState([])
+
+  const [guestCart, setGuestCart] = useState([]);
   // Holds cart for User who isn't logged in.
 
   useEffect(() => {
     axios
       .get("https://intense-lowlands-29407.herokuapp.com/api/")
-      .then(response => setProducts(response.data));
-      
-  }, [])
-
-
+      .then((response) => setProducts(response.data));
+  }, []);
 
   return (
     <Router>
@@ -75,11 +69,14 @@ const App = () => {
                 </NavDropdown.Item>
               </NavDropdown>
             ) : null}
-            <Nav.Link href="/ShoppingCart"
-            currentUser = {currentUser}
-            guestCart = {guestCart}
-            setGuestCart = {setGuestCart}
-            >Shopping Cart</Nav.Link>
+            <Nav.Link
+              href="/ShoppingCart"
+              currentUser={currentUser}
+              guestCart={guestCart}
+              setGuestCart={setGuestCart}
+            >
+              Shopping Cart
+            </Nav.Link>
           </Nav>
 
           <Form inline>
@@ -94,8 +91,8 @@ const App = () => {
                 className="Link"
                 onClick={() => {
                   clearToken();
-                  document.cookie = 0
-                  console.log(document.cookie)
+                  document.cookie = 0;
+                  console.log(document.cookie);
                   setLoggedIn(null);
                   setAuthorized(null);
                   setCurrentUser(null);
@@ -118,11 +115,10 @@ const App = () => {
               admin={admin}
               orderStarted={orderStarted}
               setOrderStarted={setOrderStarted}
-              products = {products}
-              currentUser = {currentUser}
-              guestCart = {guestCart}
-              setGuestCart = {setGuestCart}
-              
+              products={products}
+              currentUser={currentUser}
+              guestCart={guestCart}
+              setGuestCart={setGuestCart}
             />
           </Route>
           <Route path="/ManageUsers">
@@ -145,11 +141,9 @@ const App = () => {
               setAuthorized={setAuthorized}
               authorized={authorized}
               setAdmin={setAdmin}
-              currentUser = {currentUser}
-              guestCart = {guestCart}
-              setGuestCart = {setGuestCart}
-
-              
+              currentUser={currentUser}
+              guestCart={guestCart}
+              setGuestCart={setGuestCart}
             />
           </Route>
           <Route path="/Register">
@@ -157,9 +151,9 @@ const App = () => {
               setAuthorized={setAuthorized}
               loggedIn={loggedIn}
               setLoggedIn={setLoggedIn}
-              currentUser = {currentUser}
-              guestCart = {guestCart}
-              setGuestCart = {setGuestCart}
+              currentUser={currentUser}
+              guestCart={guestCart}
+              setGuestCart={setGuestCart}
             />
           </Route>
           <Route path="/Listings">
@@ -168,14 +162,13 @@ const App = () => {
               loggedIn={loggedIn}
               setLoggedIn={setLoggedIn}
               admin={admin}
-              currentUser = {currentUser}
+              currentUser={currentUser}
               orderStarted={orderStarted}
               setOrderStarted={setOrderStarted}
-              products = {products}
-              setProducts = {setProducts}
-              guestCart = {guestCart}
-              setGuestCart = {setGuestCart}
-             
+              products={products}
+              setProducts={setProducts}
+              guestCart={guestCart}
+              setGuestCart={setGuestCart}
             />
           </Route>
           <Route path="/CreateListing">
@@ -184,8 +177,7 @@ const App = () => {
               loggedIn={loggedIn}
               setLoggedIn={setLoggedIn}
               admin={admin}
-              currentUser = {currentUser}
-              
+              currentUser={currentUser}
             />
           </Route>
           <Route path="/ShoppingCart">
@@ -193,11 +185,11 @@ const App = () => {
               setAuthorized={setAuthorized}
               loggedIn={loggedIn}
               setLoggedIn={setLoggedIn}
-              currentUser = {currentUser}
-              products = {products}
-              setProducts = {setProducts}
-              guestCart = {guestCart}
-              setGuestCart = {setGuestCart}
+              currentUser={currentUser}
+              products={products}
+              setProducts={setProducts}
+              guestCart={guestCart}
+              setGuestCart={setGuestCart}
             />
           </Route>
           <Route path="/ManageListings">
@@ -208,9 +200,9 @@ const App = () => {
               admin={admin}
               selectedListing={selectedListing}
               setSelectedListing={setSelectedListing}
-              products = {products}
-              setProducts = {setProducts}
-              currentUser = {currentUser}
+              products={products}
+              setProducts={setProducts}
+              currentUser={currentUser}
             />
           </Route>
 
@@ -221,7 +213,7 @@ const App = () => {
               setLoggedIn={setLoggedIn}
               admin={admin}
               selectedUser={selectedUser}
-              currentUser = {currentUser}
+              currentUser={currentUser}
             />
           </Route>
           <Route path="/ManageSelectedListing">

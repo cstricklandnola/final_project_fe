@@ -1,24 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { storeToken } from "../auth";
-import { Redirect } from "react-router-dom";
 import axios from "axios";
 import Button from "react-bootstrap/Button";
 
 import { getToken } from "../auth";
 const token = getToken();
 
-
-
 const ManageSelectedListing = (props) => {
   const { selectedListing, admin } = props;
-   // SelectedListing is used to push the data from ManageListing to ManageSelectedListing. 
+  // SelectedListing is used to push the data from ManageListing to ManageSelectedListing.
   const [listingPayload, setListingPayload] = useState({});
   // ListingPayload is used to set the data needed for a Patch to the server.
-  
+
   // if(!admin){
   // This is the check to prevent non admins from even seeing the page.
   //   return <Redirect to="/" />}
-  
 
   const handleCommitChanges = async () => {
     try {
@@ -73,23 +68,26 @@ const ManageSelectedListing = (props) => {
       }
       console.log(finalPayload);
 
-      axios.patch (`https://intense-lowlands-29407.herokuapp.com/api/admin/${selectedListing.id}`  , 
-      { 
-        name: finalPayload.name,
-        artist: finalPayload.artist,
-        featured: finalPayload.featured,
-        price: finalPayload.price,
-        description: finalPayload.description,
-        isActive: finalPayload.isActive,
-        img: finalPayload.img
-      }, 
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        }
-      })
-        .then((response) => console.log(response))
+      axios
+        .patch(
+          `https://intense-lowlands-29407.herokuapp.com/api/admin/${selectedListing.id}`,
+          {
+            name: finalPayload.name,
+            artist: finalPayload.artist,
+            featured: finalPayload.featured,
+            price: finalPayload.price,
+            description: finalPayload.description,
+            isActive: finalPayload.isActive,
+            img: finalPayload.img,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        )
+        .then((response) => console.log(response));
     } catch (error) {
       console.error(error);
     }

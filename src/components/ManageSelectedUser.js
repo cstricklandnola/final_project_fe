@@ -1,18 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { storeToken } from "../auth";
-import { Redirect } from "react-router-dom";
 import axios from "axios";
 import Button from "react-bootstrap/Button";
 import { getToken } from "../auth";
 const token = getToken();
 
-
 const ManageSelectedUser = (props) => {
   const { selectedUser, admin } = props;
-  
 
   const [userPayload, setUserPayload] = useState({});
- // UserPayload is used to set the data needed for a Patch to the server.
+  // UserPayload is used to set the data needed for a Patch to the server.
 
   // if(!admin){
   // This is the check to prevent non admins from even seeing the page.
@@ -21,66 +17,69 @@ const ManageSelectedUser = (props) => {
   const handleCommitChanges = async () => {
     try {
       //This creates the final Payload to send to the Patch for the Username.
-      let finalPayload = {}
+      let finalPayload = {};
 
       //If the payload is missing the data from the Selected Listing, it will add it into the payload.
       if (!userPayload.firstName) {
-        
-        finalPayload.firstName = selectedUser.firstName ;
+        finalPayload.firstName = selectedUser.firstName;
+      } else {
+        finalPayload.firstName = userPayload.firstName;
       }
-      else{finalPayload.firstName = userPayload.firstName}
       if (!userPayload.lastName) {
-        
-        finalPayload.lastName = selectedUser.lastName ;
+        finalPayload.lastName = selectedUser.lastName;
+      } else {
+        finalPayload.lastName = userPayload.lastName;
       }
-      else{finalPayload.lastName = userPayload.lastName}
       if (!userPayload.username) {
-        finalPayload.username = selectedUser.username ;
+        finalPayload.username = selectedUser.username;
+      } else {
+        finalPayload.username = userPayload.username;
       }
-      else{finalPayload.username = userPayload.username}
       if (!userPayload.isAdmin) {
-        finalPayload.isAdmin = selectedUser.isAdmin
-      }else{finalPayload.isAdmin = userPayload.isAdmin}
+        finalPayload.isAdmin = selectedUser.isAdmin;
+      } else {
+        finalPayload.isAdmin = userPayload.isAdmin;
+      }
       if (!userPayload.email) {
-        finalPayload.email = selectedUser.email
-      }else{finalPayload.email = userPayload.email}
+        finalPayload.email = selectedUser.email;
+      } else {
+        finalPayload.email = userPayload.email;
+      }
       console.log(finalPayload);
 
-      axios.patch (`https://intense-lowlands-29407.herokuapp.com/api/admin/manage_customer/${selectedUser.id}`  , 
-      { 
-        firstName: finalPayload.firstName,
-        lastName: finalPayload.lastName,
-        username: finalPayload.username,
-        isAdmin: finalPayload.isAdmin,
-        isActive: finalPayload.isActive,
-        email: finalPayload.email
-      }, 
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        }
-      })
-        .then((response) => console.log(response))
+      axios
+        .patch(
+          `https://intense-lowlands-29407.herokuapp.com/api/admin/manage_customer/${selectedUser.id}`,
+          {
+            firstName: finalPayload.firstName,
+            lastName: finalPayload.lastName,
+            username: finalPayload.username,
+            isAdmin: finalPayload.isAdmin,
+            isActive: finalPayload.isActive,
+            email: finalPayload.email,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        )
+        .then((response) => console.log(response));
     } catch (error) {
       console.error(error);
-      
     }
   };
-
-
-
-  
 
   const handlePasswordReset = async () => {
     try {
       //This assumes we can randomize a new password.
-      alert(selectedUser.userId + "has been sent a new password.")
+      alert(selectedUser.userId + "has been sent a new password.");
     } catch (error) {
       console.error(error);
-      
-    }}
-  
+    }
+  };
+
   //   if(!admin){
   //     return <Redirect to="/" />}
 
@@ -142,7 +141,7 @@ const ManageSelectedUser = (props) => {
         }
       />
       <p></p>
-      
+
       <Button
         type="button"
         variant="secondary"
