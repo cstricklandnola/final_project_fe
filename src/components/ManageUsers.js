@@ -6,124 +6,9 @@ import { CardColumns } from "react-bootstrap";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import axios from "axios";
+import Spinner from "react-bootstrap/Spinner";
 
-//||**************************************************** Delete whatever is contained in this ****************************************************||
-const dummyUserDataBase = [
-  {
-    userId: 1,
-    isActive: true,
-    isAdmin: true,
-    username: "JohnSmith99",
-    name: "John Smith",
-    email: "a@a.com",
-    password: "123123",
-    previousOrders: [],
-    currentOrder: {
-      uniqueOrderId: "1",
-      items: [
-        [1, 5],
-        [2, 4],
-        [3, 3],
-        [4, 2],
-        [5, 1],
-      ],
-    },
-    reviews: [
-      {
-        itemId: "1",
-        reviewId: 1,
-        date: "10/17/2020",
-        rating: "5",
-        text: "This was great!",
-      },
-      {
-        itemId: "2",
-        reviewId: 2,
-        date: "10/20/2020",
-        rating: "2",
-        text: "This was terrible.",
-      },
-    ],
-  },
-  {
-    userId: 2,
-    isActive: true,
-    isAdmin: false,
-    username: "AnnaJoe",
-    name: "Anna Joe",
-    email: "b@b.com",
-    password: "22222222",
-    previousOrders: [],
-    currentOrder: {
-      uniqueOrderId: "2",
-      items: [
-        [2, 1],
-        [3, 2],
-        [4, 1],
-        [5, 22],
-        [1, 55],
-      ],
-    },
-    reviews: [
-      {
-        itemId: "3",
-        reviewId: 4,
-        date: "11/11/2020",
-        rating: "3",
-        text: "This was meh!",
-      },
-      {
-        itemId: "4",
-        reviewId: 3,
-        date: "12/01/2020",
-        rating: "2",
-        text: "This was okay.",
-      },
-    ],
-  },
-  {
-    userId: 3,
-    isActive: true,
-    isAdmin: false,
-    username: "BillyBob11",
-    name: "Billy Bob",
-    email: "c@c.com",
-    password: "3333333",
-    previousOrders: [
-      {
-        uniqueOrderId: 3,
-        items: [
-          [2, 1],
-          [1, 3],
-        ],
-      },
-    ],
-    currentOrder: {
-      uniqueOrderId: "4",
-      items: [
-        [1, 2],
-        [4, 3],
-      ],
-    },
-    reviews: [
-      {
-        itemId: "3",
-        reviewId: 4,
-        date: "11/11/2020",
-        rating: "3",
-        text: "This was meh!",
-      },
-      {
-        itemId: "4",
-        reviewId: 3,
-        date: "12/01/2020",
-        rating: "2",
-        text: "This was okay.",
-      },
-    ],
-  },
-];
-// **************************************************** Delete whatever is contained in this ****************************************************||
+
 
 // const handleSelectUser = async (value, setSelectedUser, selectedUser) => {
 //   try {
@@ -154,6 +39,8 @@ const ManageUsers = (props) => {
   const [filteredUserList, setFilteredUserList] = useState("");
   //FilterUserList is used to filter the results via searching.
 
+  const [userData, setUserData] = useState("");
+
   const { admin } = props;
 
   // if(!admin){
@@ -170,13 +57,13 @@ const ManageUsers = (props) => {
           },
         }
       )
-      .then((response) => console.log(response));
+      .then((response) => setUserData(response.data));
   }, []);
 
   const filterResults = () => {
     //This filters our results! Name -> Cost.
-    let resultsFilter = dummyUserDataBase;
-    console.log(filteredUserList.username);
+    let resultsFilter = userData;
+    console.log(userData)
     if (filteredUserList.username) {
       resultsFilter = resultsFilter.filter(function (dummy) {
         return dummy.username
@@ -192,7 +79,16 @@ const ManageUsers = (props) => {
     }
     return resultsFilter;
   };
-
+  if (userData[0]?.username === undefined) {
+    return (
+      <>
+      <h1>Welcome to The User Database:</h1>
+        <Spinner animation="border" role="status">
+          <span className="sr-only">Loading...</span>
+        </Spinner>
+      </>
+    );
+  } else {
   return (
     <div>
       <h1>Welcome to The User Database:</h1>
@@ -220,7 +116,7 @@ const ManageUsers = (props) => {
                   <Card.Body>
                     <Card.Text>
                       <li>
-                        <b>UserId:</b> {user.userId}
+                        <b>UserId:</b> {user.id}
                       </li>
                       <li>
                         <b>Username:</b> {user.username}
@@ -261,6 +157,6 @@ const ManageUsers = (props) => {
       </div>
     </div>
   );
-};
+};}
 
 export default ManageUsers;

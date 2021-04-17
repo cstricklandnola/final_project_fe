@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { storeToken } from "../auth";
 import { Redirect } from "react-router-dom";
-
+import axios from "axios";
 import Button from "react-bootstrap/Button";
+import { getToken } from "../auth";
+const token = getToken();
 
-//||****************************************************||Delete whatever is contained in this ****************************************************||
-
-//**************************************************** Delete whatever is contained in this ****************************************************||
 
 const ManageSelectedUser = (props) => {
   const { selectedUser, admin } = props;
@@ -25,11 +24,16 @@ const ManageSelectedUser = (props) => {
       let finalPayload = {}
 
       //If the payload is missing the data from the Selected Listing, it will add it into the payload.
-      if (!userPayload.name) {
+      if (!userPayload.firstName) {
         
-        finalPayload.name = selectedUser.name ;
+        finalPayload.firstName = selectedUser.firstName ;
       }
-      else{finalPayload.name = userPayload.name}
+      else{finalPayload.firstName = userPayload.firstName}
+      if (!userPayload.lastName) {
+        
+        finalPayload.lastName = selectedUser.lastName ;
+      }
+      else{finalPayload.lastName = userPayload.lastName}
       if (!userPayload.username) {
         finalPayload.username = selectedUser.username ;
       }
@@ -41,11 +45,32 @@ const ManageSelectedUser = (props) => {
         finalPayload.email = selectedUser.email
       }else{finalPayload.email = userPayload.email}
       console.log(finalPayload);
+
+      axios.patch (`https://intense-lowlands-29407.herokuapp.com/api/admin/manage_customer/${selectedUser.id}`  , 
+      { 
+        firstName: finalPayload.firstName,
+        lastName: finalPayload.lastName,
+        username: finalPayload.username,
+        isAdmin: finalPayload.isAdmin,
+        isActive: finalPayload.isActive,
+        email: finalPayload.email
+      }, 
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        }
+      })
+        .then((response) => console.log(response))
     } catch (error) {
       console.error(error);
       
     }
   };
+
+
+
+  
 
   const handlePasswordReset = async () => {
     try {
@@ -65,16 +90,25 @@ const ManageSelectedUser = (props) => {
     <div>
       <h1>Welcome to The Modify User Page:</h1>
       {selectedUser.username}
-      <li>userId: {selectedUser.userId}</li>
+      <li>userId: {selectedUser.id}</li>
       <li>isActive: {selectedUser.isActive}</li>
-      <li>name: {selectedUser.name}</li>
-      <label>Name:</label>
+      <label>First Name:</label>
       <input
-        name="name"
+        name="firstName"
         required
-        defaultValue={selectedUser.name}
+        defaultValue={selectedUser.firstName}
         onChange={(e) =>
-          setUserPayload({ ...userPayload, name: e.target.value })
+          setUserPayload({ ...userPayload, firstName: e.target.value })
+        }
+      />
+      <p></p>
+      <label>Last Name:</label>
+      <input
+        name="lastName"
+        required
+        defaultValue={selectedUser.lastName}
+        onChange={(e) =>
+          setUserPayload({ ...userPayload, lastName: e.target.value })
         }
       />
       <p></p>

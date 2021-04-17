@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { storeToken } from "../auth";
 import { Redirect } from "react-router-dom";
-
+import axios from "axios";
 import Button from "react-bootstrap/Button";
+
+import { getToken } from "../auth";
+const token = getToken();
 
 
 
@@ -32,6 +35,11 @@ const ManageSelectedListing = (props) => {
         finalPayload.name = selectedListing.name;
       } else {
         finalPayload.name = listingPayload.name;
+      }
+      if (!listingPayload.artist) {
+        finalPayload.artist = selectedListing.artist;
+      } else {
+        finalPayload.artist = listingPayload.artist;
       }
       if (!listingPayload.description) {
         finalPayload.description = selectedListing.description;
@@ -64,6 +72,24 @@ const ManageSelectedListing = (props) => {
         finalPayload.featured = listingPayload.featured;
       }
       console.log(finalPayload);
+
+      axios.patch (`https://intense-lowlands-29407.herokuapp.com/api/admin/${selectedListing.id}`  , 
+      { 
+        name: finalPayload.name,
+        artist: finalPayload.artist,
+        featured: finalPayload.featured,
+        price: finalPayload.price,
+        description: finalPayload.description,
+        isActive: finalPayload.isActive,
+        img: finalPayload.img
+      }, 
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        }
+      })
+        .then((response) => console.log(response))
     } catch (error) {
       console.error(error);
     }
@@ -96,6 +122,16 @@ const ManageSelectedListing = (props) => {
         defaultValue={selectedListing.name}
         onChange={(e) =>
           setListingPayload({ ...listingPayload, name: e.target.value })
+        }
+      />
+      <p></p>
+      <label>Artist: </label>
+      <input
+        name="artist"
+        required
+        defaultValue={selectedListing.artist}
+        onChange={(e) =>
+          setListingPayload({ ...listingPayload, artist: e.target.value })
         }
       />
       <p></p>

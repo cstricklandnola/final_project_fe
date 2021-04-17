@@ -14,8 +14,6 @@ const ShoppingCart = (props) => {
   const [shoppingCart, setShoppingCart] = useState("");
   
 
-  console.log(JSON.parse(localStorage.getItem('cart')))
-
   
 
   const handleSubmitRemoveFromCart = async (serialno) => {
@@ -77,16 +75,44 @@ const ShoppingCart = (props) => {
       </>
     );
   } else if (shoppingCart === "redirect") {
-    console.log(shoppingCart);
+    
     return <Redirect to="/listings" />;
   } else {
-    console.log(shoppingCart);
+    
     shoppingCart.forEach((item) => {
+      //This removes the $ from the price key.
       var g = item.price;
       g = g.replace(/\$/g, "");
       g = parseFloat(g);
       price = price + g * item.quantity;
     });
+    let tempVar = []
+
+  
+  let tempCart = shoppingCart
+  let finalCart = []
+  
+  
+
+  if(tempCart[0]?.productId === undefined){
+  console.log ("NOPE!")}
+  else {
+    //This goes through the cart and creates a new object that adds an accumulator for the quantity
+    //anytime that the id is repeated.
+    finalCart = Object.values(tempCart.reduce((acc, v) => {
+      if (!acc[v.id]) {
+          acc[v.id] = {id: v.id, quantity: 0, price: v.price, name: v.name};
+      }
+      acc[v.id].quantity += v.quantity;
+      return acc;
+   }, {}));
+    console.log(finalCart)}
+
+
+  
+
+
+  
 
     return (
       <div>
@@ -104,9 +130,9 @@ const ShoppingCart = (props) => {
             </tr>
           </thead>
           <tbody>
-            {shoppingCart.map((item) => (
+            {finalCart.map((item) => (
               <tr>
-                <td>{item.productId}</td>
+                <td>{item.id}</td>
                 <td>{item.name}</td>
                 <td>{item.quantity}</td>
                 <td>{item.price}</td>
