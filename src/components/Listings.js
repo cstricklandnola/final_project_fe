@@ -59,7 +59,8 @@ const Listings = (props) => {
     //This filters our results! Name -> Cost.
     //We could use this to filter off one search bar, and have it progress down each possible data source.
 
-    let resultsFilter = products;
+    let resultsFilter = products
+
     if (resultsFilter) {
       if (searchItem.name) {
         resultsFilter = resultsFilter.filter(function (dummy) {
@@ -97,7 +98,9 @@ const Listings = (props) => {
           return g < parseInt(searchItem.price);
         });
       }
-      return resultsFilter;
+      return resultsFilter.filter(function (dummy) {
+        return dummy.isActive;
+      });;
     } else {
       return false;
     }
@@ -144,9 +147,8 @@ const Listings = (props) => {
                       <h2>{item.name}</h2>
                       <h3>By: {item.artist}</h3>
                       <h4>{item.price}</h4>
-                      <li>
-                        <b>Description:</b> {item.description}
-                      </li>
+                      <b>Description:</b> {item.description}
+                      <p></p>
 
                       <Button
                         type="button"

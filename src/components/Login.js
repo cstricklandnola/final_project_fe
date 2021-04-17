@@ -59,6 +59,10 @@ const Login = (props) => {
         if (result.message === "you're logged in! ") {
           dataDump = result.customer;
           document.cookie = result.customer.id;
+          localStorage.setItem(
+            "admin",
+            result.customer.isAdmin)
+            
           setCurrentUser(dataDump);
 
           alert(result.message);
@@ -66,6 +70,7 @@ const Login = (props) => {
           setAuthorized(result.token);
           setLoggedIn(result.token);
           setAdmin(result.customer.isAdmin);
+
           storeToken(result.token);
           guestCart.guestCart.forEach((item) => {
             handleSubmitGuestCart(item);
@@ -78,7 +83,7 @@ const Login = (props) => {
       .catch(console.error);
   };
   if (loggedIn) {
-    console.log(currentUser);
+    
     return <Redirect to="/listings" />;
   } else {
     return (

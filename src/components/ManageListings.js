@@ -5,15 +5,35 @@ import Button from "react-bootstrap/Button";
 import { Link } from "react-router-dom";
 import Spinner from "react-bootstrap/Spinner";
 import axios from "axios";
+import { getToken } from "../auth";
+const token = getToken();
 
 const HandleSubmitDeleteItem = async (item) => {
   try {
-    alert("Id: " + item.id + " is going to be deleted.");
-  } catch (error) {
-    console.error(error);
-  }
-};
-
+    //This creates the final Payload to send to the Patch for Item.
+    
+    //If the payload is missing the data from the Selected Listing, it will add it into the payload.
+    axios
+      .patch(
+        `https://intense-lowlands-29407.herokuapp.com/api/admin/${item.id}`,
+        {
+          
+          isActive: false,
+         
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      .then((response) => console.log(response))
+  
+    } catch (error) {
+      console.error(error);
+    }}
+  
 const ManageListings = (props) => {
   const {
     admin,

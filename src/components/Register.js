@@ -8,8 +8,7 @@ const Register = (props) => {
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
-    console.log (user.username)
-    console.log (user.password)
+
     fetch(
       "https://intense-lowlands-29407.herokuapp.com/api/customers/register",
       {

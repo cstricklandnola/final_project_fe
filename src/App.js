@@ -39,7 +39,10 @@ const App = () => {
   const [guestCart, setGuestCart] = useState([]);
   // Holds cart for User who isn't logged in.
 
+  
+
   useEffect(() => {
+  setAdmin(JSON.parse(localStorage.getItem("admin")))
     axios
       .get("https://intense-lowlands-29407.herokuapp.com/api/")
       .then((response) => setProducts(response.data));
