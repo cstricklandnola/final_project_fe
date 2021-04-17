@@ -3,10 +3,12 @@ import axios from "axios";
 import { Redirect } from "react-router-dom";
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
+import { getToken } from "../auth";
+const token = getToken();
 
 const ShoppingCart = (props) => {
   const userKey = document.cookie;
-  
+  let finalCart = [];
   const [deletedItems, setDeletedItems] = useState(0);
 
   const [shoppingCart, setShoppingCart] = useState("");
@@ -14,21 +16,41 @@ const ShoppingCart = (props) => {
   const handleSubmitRemoveFromCart = async (serialno) => {
     try {
       setDeletedItems(true);
-      console.log(serialno);
 
-      axios
-
-        .delete(
-          `https://intense-lowlands-29407.herokuapp.com/api/shopping_cart/${serialno}`
-        )
-        .then((response) => console.log(response.data));
+      axios.delete(
+        `https://intense-lowlands-29407.herokuapp.com/api/shopping_cart/${serialno}`
+      );
     } catch (error) {
       console.error(error);
     }
   };
-  const handleSubmitOrder = async (item) => {
+  const handleSubmitOrder = async () => {
     try {
       alert("We are submitting the order.");
+      console.log("Attention below.");
+      console.log(finalCart);
+      finalCart.forEach((product) => {
+        try {
+          axios.post(
+            "https://intense-lowlands-29407.herokuapp.com/api/orders/checkout",
+            {
+              orderId: 5,
+              productId: 2,
+              username: localStorage.getItem("customerUserName"),
+              email: localStorage.getItem("customerEmail"),
+              status: "submitted",
+              quantity: product.quantity,
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+        } catch (error) {
+          console.error(error);
+        }
+      });
     } catch (error) {
       console.error(error);
     }
@@ -36,12 +58,11 @@ const ShoppingCart = (props) => {
   const handleDeleteOrder = async (orderId) => {
     try {
       alert("We are deleting your cart.");
-      console.log(orderId);
-      axios
-        .delete(
-          `https://intense-lowlands-29407.herokuapp.com/api/orders/${orderId}`
-        )
-        .then((response) => console.log(response.data));
+
+      axios.delete(
+        `https://intense-lowlands-29407.herokuapp.com/api/orders/${orderId}`
+      );
+
       setShoppingCart("redirect");
     } catch (error) {
       console.error(error);
@@ -54,8 +75,7 @@ const ShoppingCart = (props) => {
       .get(
         `https://intense-lowlands-29407.herokuapp.com/api/shopping_cart/${userKey}`
       )
-      .then((response) => setShoppingCart(response.data))
-      .then(console.log(shoppingCart));
+      .then((response) => setShoppingCart(response.data));
   }, [deletedItems]);
 
   let price = 0;
@@ -65,12 +85,8 @@ const ShoppingCart = (props) => {
     return (
       <>
         <h1>Welcome to Your Shopping Cart:</h1>
-
         <h3>Your cart is currently empty, or being fetched.</h3>
-        <img
-          src="https://aestheticsforbirds.files.wordpress.com/2020/03/artworld.jpg?w=463&h=349"
-          alt="W3Schools.com"
-        ></img>
+        <img src="https://aestheticsforbirds.files.wordpress.com/2020/03/artworld.jpg?w=463&h=349"></img>
       </>
     );
   } else if (shoppingCart === "redirect") {
@@ -85,10 +101,8 @@ const ShoppingCart = (props) => {
     });
 
     let tempCart = shoppingCart;
-    let finalCart = [];
 
     if (tempCart[0]?.productId === undefined) {
-      console.log("NOPE!");
     } else {
       //This goes through the cart and creates a new object that adds an accumulator for the quantity
       //anytime that the id is repeated.
@@ -97,6 +111,7 @@ const ShoppingCart = (props) => {
           if (!acc[v.id]) {
             acc[v.id] = {
               id: v.id,
+              productId: v.productId,
               quantity: 0,
               price: v.price,
               name: v.name,
@@ -107,7 +122,6 @@ const ShoppingCart = (props) => {
           return acc;
         }, {})
       );
-      console.log(finalCart);
     }
 
     return (

@@ -2,28 +2,46 @@ import Carousel from "react-bootstrap/Carousel";
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
+import axios from "axios";
 
 const Home = (props) => {
-  const { orderStarted, setOrderStarted, products } = props;
-
-  console.log(products);
+  
+  const { products, guestCart, setGuestCart } = props;
+  const userKey = document.cookie;
 
   const handleSubmitAddToCart = async (item) => {
     try {
       //Check state to see if an order has been started. If it hasn't been, start a new order. If it has been, add item.
-      if (orderStarted) {
-        alert("ItemId: " + item.itemId + " was added to the cart.");
+
+      //orders/
+
+      if (userKey == 0) {
+        //make array!
+        let tempArray = guestCart;
+
+        tempArray.push(item);
+        setGuestCart(tempArray);
+        localStorage.setItem(
+          "cart",
+          JSON.stringify({
+            guestCart,
+          })
+        );
       } else {
-        alert("ItemId: " + item.itemId + " was added to a NEW cart!");
-        setOrderStarted(true);
+        axios
+          .post("https://intense-lowlands-29407.herokuapp.com/api/orders/", {
+            orderId: userKey,
+            productId: item.id,
+            status: "Processing",
+            quantity: "1",
+          })
+         
       }
     } catch (error) {
       console.error(error);
     }
   };
-  //||**************************************************** Delete whatever is contained in this ****************************************************||
 
-  //||**************************************************** Delete whatever is contained in this ****************************************************||
   const filterResults = products.filter(function (dummy) {
     return dummy.isActive === true && dummy.featured === true;
   });

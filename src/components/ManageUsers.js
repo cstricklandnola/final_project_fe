@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { getToken } from "../auth";
+
 import { Link } from "react-router-dom";
 import Card from "react-bootstrap/Card";
 import { CardColumns } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import axios from "axios";
 import Spinner from "react-bootstrap/Spinner";
-
+import { getToken } from "../auth";
 const token = getToken();
 
 const handlePreviousOrders = async (user) => {
@@ -48,7 +48,7 @@ const ManageUsers = (props) => {
   const filterResults = () => {
     //This filters our results! Name -> Cost.
     let resultsFilter = userData;
-    console.log(userData);
+  
     if (filteredUserList.username) {
       resultsFilter = resultsFilter.filter(function (dummy) {
         return dummy.username

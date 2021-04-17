@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
-import { getToken } from "../auth";
+
 import { CardColumns } from "react-bootstrap";
 import Spinner from "react-bootstrap/Spinner";
 import axios from "axios";
@@ -9,7 +9,7 @@ import axios from "axios";
 const Listings = (props) => {
   const { setProducts, products, guestCart, setGuestCart } = props;
   const userKey = document.cookie;
-  const token = getToken();
+
   // OrderedStarted is state to determine if a cart has already been made for the user.
   const [searchItem, setSearchItem] = useState("");
   // SearchItem is used to determine what the user wants to search for. This is an object that also works with the slider for Cost.
@@ -46,7 +46,7 @@ const Listings = (props) => {
             status: "Processing",
             quantity: "1",
           })
-          .then((response) => console.log(response));
+         
       }
     } catch (error) {
       console.error(error);
@@ -71,7 +71,7 @@ const Listings = (props) => {
       }
 
       if (resultsFilter.length === 0) {
-        console.log(resultsFilter);
+        
         //If the filter put is the point where nothing exists by name, it will then reload the database, and then search by description.
         resultsFilter = products.filter(function (dummy) {
           return dummy.description

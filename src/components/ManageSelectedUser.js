@@ -1,13 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState} from "react";
 import axios from "axios";
+import { Redirect } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import { getToken } from "../auth";
+import { Link } from "react-router-dom";
 const token = getToken();
+
 
 const ManageSelectedUser = (props) => {
   const { selectedUser, admin } = props;
 
   const [userPayload, setUserPayload] = useState({});
+  const [changesMade, setChangesMade] = useState();
   // UserPayload is used to set the data needed for a Patch to the server.
 
   // if(!admin){
@@ -45,7 +49,7 @@ const ManageSelectedUser = (props) => {
       } else {
         finalPayload.email = userPayload.email;
       }
-      console.log(finalPayload);
+      
 
       axios
         .patch(
@@ -65,7 +69,8 @@ const ManageSelectedUser = (props) => {
             },
           }
         )
-        .then((response) => console.log(response));
+        setChangesMade("Changes have been saved.")
+       
     } catch (error) {
       console.error(error);
     }
@@ -144,18 +149,20 @@ const ManageSelectedUser = (props) => {
 
       <Button
         type="button"
-        variant="secondary"
+        variant="success"
         onClick={() => handleCommitChanges(userPayload)}
       >
         Commit Changes
       </Button>
-      <Button
+      <Link to="/ManageUsers"><Button
         type="button"
-        variant="secondary"
-        onClick={() => handlePasswordReset()}
+        variant="warning"
+        onClick={() => handleCommitChanges()}
       >
-        Reset Password
-      </Button>
+        Return to Listings
+      </Button></Link>
+<p></p> {changesMade}
+      
     </div>
   );
 };

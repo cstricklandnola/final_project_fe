@@ -24,7 +24,7 @@ import {
 
 const App = () => {
   const [authorized, setAuthorized] = useState(false);
-  const [currentUser, setCurrentUser] = useState();
+
   //Current User = Current User Data loaded in on log in.
   const [loggedIn, setLoggedIn] = useState(getToken());
   const [admin, setAdmin] = useState(null);
@@ -39,10 +39,9 @@ const App = () => {
   const [guestCart, setGuestCart] = useState([]);
   // Holds cart for User who isn't logged in.
 
-  
-
   useEffect(() => {
-  setAdmin(JSON.parse(localStorage.getItem("admin")))
+    setAdmin(JSON.parse(localStorage.getItem("admin")));
+
     axios
       .get("https://intense-lowlands-29407.herokuapp.com/api/")
       .then((response) => setProducts(response.data));
@@ -74,7 +73,6 @@ const App = () => {
             ) : null}
             <Nav.Link
               href="/ShoppingCart"
-              currentUser={currentUser}
               guestCart={guestCart}
               setGuestCart={setGuestCart}
             >
@@ -95,10 +93,11 @@ const App = () => {
                 onClick={() => {
                   clearToken();
                   document.cookie = 0;
-                  console.log(document.cookie);
+                  localStorage.setItem("admin", null);
+                  localStorage.setItem("customer", null);
+                  setAdmin(null);
                   setLoggedIn(null);
                   setAuthorized(null);
-                  setCurrentUser(null);
                 }}
                 to="/"
               >
@@ -119,7 +118,6 @@ const App = () => {
               orderStarted={orderStarted}
               setOrderStarted={setOrderStarted}
               products={products}
-              currentUser={currentUser}
               guestCart={guestCart}
               setGuestCart={setGuestCart}
             />
@@ -128,7 +126,6 @@ const App = () => {
             <ManageUsers
               loggedIn={loggedIn}
               setLoggedIn={setLoggedIn}
-              setCurrentUser={setCurrentUser}
               setAuthorized={setAuthorized}
               authorized={authorized}
               admin={admin}
@@ -140,11 +137,9 @@ const App = () => {
             <Login
               loggedIn={loggedIn}
               setLoggedIn={setLoggedIn}
-              setCurrentUser={setCurrentUser}
               setAuthorized={setAuthorized}
               authorized={authorized}
               setAdmin={setAdmin}
-              currentUser={currentUser}
               guestCart={guestCart}
               setGuestCart={setGuestCart}
             />
@@ -154,7 +149,6 @@ const App = () => {
               setAuthorized={setAuthorized}
               loggedIn={loggedIn}
               setLoggedIn={setLoggedIn}
-              currentUser={currentUser}
               guestCart={guestCart}
               setGuestCart={setGuestCart}
             />
@@ -165,7 +159,20 @@ const App = () => {
               loggedIn={loggedIn}
               setLoggedIn={setLoggedIn}
               admin={admin}
-              currentUser={currentUser}
+              orderStarted={orderStarted}
+              setOrderStarted={setOrderStarted}
+              products={products}
+              setProducts={setProducts}
+              guestCart={guestCart}
+              setGuestCart={setGuestCart}
+            />
+          </Route>
+          <Route path="/Home">
+            <Listings
+              setAuthorized={setAuthorized}
+              loggedIn={loggedIn}
+              setLoggedIn={setLoggedIn}
+              admin={admin}
               orderStarted={orderStarted}
               setOrderStarted={setOrderStarted}
               products={products}
@@ -180,7 +187,6 @@ const App = () => {
               loggedIn={loggedIn}
               setLoggedIn={setLoggedIn}
               admin={admin}
-              currentUser={currentUser}
             />
           </Route>
           <Route path="/ShoppingCart">
@@ -188,7 +194,6 @@ const App = () => {
               setAuthorized={setAuthorized}
               loggedIn={loggedIn}
               setLoggedIn={setLoggedIn}
-              currentUser={currentUser}
               products={products}
               setProducts={setProducts}
               guestCart={guestCart}
@@ -205,7 +210,6 @@ const App = () => {
               setSelectedListing={setSelectedListing}
               products={products}
               setProducts={setProducts}
-              currentUser={currentUser}
             />
           </Route>
 
@@ -216,7 +220,6 @@ const App = () => {
               setLoggedIn={setLoggedIn}
               admin={admin}
               selectedUser={selectedUser}
-              currentUser={currentUser}
             />
           </Route>
           <Route path="/ManageSelectedListing">

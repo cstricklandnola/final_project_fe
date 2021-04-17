@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import Button from "react-bootstrap/Button";
-
+import { Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { getToken } from "../auth";
 const token = getToken();
 
@@ -10,7 +11,7 @@ const ManageSelectedListing = (props) => {
   // SelectedListing is used to push the data from ManageListing to ManageSelectedListing.
   const [listingPayload, setListingPayload] = useState({});
   // ListingPayload is used to set the data needed for a Patch to the server.
-
+  const [changesMade, setChangesMade] = useState();
   // if(!admin){
   // This is the check to prevent non admins from even seeing the page.
   //   return <Redirect to="/" />}
@@ -66,7 +67,7 @@ const ManageSelectedListing = (props) => {
       } else {
         finalPayload.featured = listingPayload.featured;
       }
-      console.log(finalPayload);
+     
 
       axios
         .patch(
@@ -87,7 +88,9 @@ const ManageSelectedListing = (props) => {
             },
           }
         )
-        .then((response) => console.log(response));
+        setChangesMade("Changes have been saved.")
+      
+        
     } catch (error) {
       console.error(error);
     }
@@ -186,11 +189,19 @@ const ManageSelectedListing = (props) => {
 
       <Button
         type="button"
-        variant="secondary"
+        variant="success"
         onClick={() => handleCommitChanges()}
       >
         Commit Changes
       </Button>
+      <Link to="/ManageListings"><Button
+        type="button"
+        variant="warning"
+        onClick={() => handleCommitChanges()}
+      >
+        Return to Listings
+      </Button></Link>
+      <p></p> {changesMade}
     </div>
   );
 };

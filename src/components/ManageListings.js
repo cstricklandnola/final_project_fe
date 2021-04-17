@@ -28,7 +28,7 @@ const HandleSubmitDeleteItem = async (item) => {
           },
         }
       )
-      .then((response) => console.log(response))
+      
   
     } catch (error) {
       console.error(error);
@@ -37,7 +37,6 @@ const HandleSubmitDeleteItem = async (item) => {
 const ManageListings = (props) => {
   const {
     admin,
-    selectedListing,
     setSelectedListing,
     products,
     setProducts,
@@ -71,7 +70,7 @@ const ManageListings = (props) => {
       }
 
       if (resultsFilter.length === 0) {
-        console.log(resultsFilter);
+        
         //If the filter put is the point where nothing exists by name, it will then reload the database, and then search by description.
         resultsFilter = products.filter(function (dummy) {
           return dummy.description

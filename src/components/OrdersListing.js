@@ -23,7 +23,7 @@ const OrdersListing = (props) => {
       )
       .then((response) => setListingData(response.data));
   }, []);
-  console.log(listingData)
+  
 
   const handleStageChange = () => {
     alert("Change stage?");

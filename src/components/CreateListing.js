@@ -20,7 +20,7 @@ const CreateListing = (props) => {
     // We will be using State to hold the values for the form of sending the Create Listing.
 
     evt.preventDefault();
-    console.log(listingData);
+    
     try {
       //Creates a new listing.
 
@@ -45,9 +45,9 @@ const CreateListing = (props) => {
             },
           }
         )
-        .then((response) => console.log(response));
+        
     } catch (error) {
-      console.error(error);
+      
     }
   };
   return (

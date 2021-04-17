@@ -1,5 +1,5 @@
 import { getToken } from "../auth";
-const token = "I can't believe it."
+
 //const token = getToken();
 
 const baseURL = "https://intense-lowlands-29407.herokuapp.com/api/";

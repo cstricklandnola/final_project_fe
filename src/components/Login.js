@@ -6,32 +6,19 @@ import axios from "axios";
 
 const Login = (props) => {
   const [user, setUser] = useState("");
-
-  const {
-    setAuthorized,
-    setCurrentUser,
-    loggedIn,
-    setLoggedIn,
-    setAdmin,
-    currentUser,
-  } = props;
-
-  const guestCart = JSON.parse(localStorage.getItem("cart"));
-
-  let dataDump = {};
+  const { setAuthorized, loggedIn, setLoggedIn, setAdmin } = props;
+  const finalGuestCart = JSON.parse(localStorage.getItem("cart"));
 
   const handleSubmitGuestCart = async (item) => {
     try {
       //Check state to see if an order has been started. If it hasn't been, start a new order. If it has been, add item.
 
-      axios
-        .post("https://intense-lowlands-29407.herokuapp.com/api/orders/", {
-          orderId: document.cookie,
-          productId: item.id,
-          status: "Processing",
-          quantity: "1",
-        })
-        .then((response) => console.log(response));
+      axios.post("https://intense-lowlands-29407.herokuapp.com/api/orders/", {
+        orderId: document.cookie,
+        productId: item.id,
+        status: "Processing",
+        quantity: "1",
+      });
     } catch (error) {
       console.error(error);
     }
@@ -57,22 +44,16 @@ const Login = (props) => {
       .then((response) => response.json())
       .then((result) => {
         if (result.message === "you're logged in! ") {
-          dataDump = result.customer;
           document.cookie = result.customer.id;
-          localStorage.setItem(
-            "admin",
-            result.customer.isAdmin)
-            
-          setCurrentUser(dataDump);
-
+          localStorage.setItem("admin", result.customer.isAdmin);
+          localStorage.setItem("customerEmail", result.customer.email);
+          localStorage.setItem("customerUserName", result.customer.username);
           alert(result.message);
-
           setAuthorized(result.token);
           setLoggedIn(result.token);
           setAdmin(result.customer.isAdmin);
-
           storeToken(result.token);
-          guestCart.guestCart.forEach((item) => {
+          finalGuestCart.guestCart.forEach((item) => {
             handleSubmitGuestCart(item);
           });
         } else {
@@ -83,7 +64,6 @@ const Login = (props) => {
       .catch(console.error);
   };
   if (loggedIn) {
-    
     return <Redirect to="/listings" />;
   } else {
     return (
