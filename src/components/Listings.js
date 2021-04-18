@@ -5,6 +5,7 @@ import Button from "react-bootstrap/Button";
 import { CardColumns } from "react-bootstrap";
 import Spinner from "react-bootstrap/Spinner";
 import axios from "axios";
+import './listings.css';
 
 const Listings = (props) => {
   const { setProducts, products, guestCart, setGuestCart } = props;
@@ -107,29 +108,30 @@ const Listings = (props) => {
   };
   if (products[0] === undefined) {
     return (
-      <>
-        <h1>Welcome to The Shop Listings:</h1>
+      <div class="listings">
+        <h1>THE CRESCENT CITY ART COLLECTION</h1>
         <Spinner animation="border" role="status">
           <span className="sr-only">Loading...</span>
         </Spinner>
-      </>
+      </div>
     );
   } else {
     return (
-      <div>
-        <h1>Welcome to The Shop Listings:</h1>
-        <label>Search:</label>
+      <div class="listings">
+        <h1>THE CRESCENT CITY ART COLLECTION</h1>
         <input
           type="text"
+          style={{width: '50%'}}
+          placeholder="Search by name, artist, etc..."
           onChange={(e) =>
             setSearchItem({ ...searchItem, name: e.target.value })
           }
         />
-        <label>Cost:</label>
+        <label>Filter by Cost:</label>
 
         <input
           type="range"
-          min="100"
+          min="250"
           max="10000"
           onChange={(e) =>
             setSearchItem({ ...searchItem, price: e.target.value })
@@ -140,8 +142,8 @@ const Listings = (props) => {
           <CardColumns>
             {filterResults().map((item, index) => {
               return (
-                <Card style={{ width: "18rem" }} className="mb-2">
-                  <Card.Img variant="top" src={item.img} />
+                <Card style={{ width: "24rem" }} className="mb-2">
+                  <Card.Img variant="top" style={{height: 'auto', width: '24rem'}} src={item.img} />
                   <Card.Body>
                     <Card.Text>
                       <h2>{item.name}</h2>
