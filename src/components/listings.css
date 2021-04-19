@@ -17,11 +17,6 @@
   color: #fff;
 }
 
-label {
-  color: #fff;
-  margin-top: 50px;
-  font-size: 30px;
-}
 .card-columns {
   margin: 0 30px;
 }
@@ -29,4 +24,9 @@ label {
 .card-text {
   height: 500px;
   overflow: auto;
+}
+
+#cost-filter {
+  margin-bottom: 30px;
+
 }

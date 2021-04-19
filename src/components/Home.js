@@ -1,13 +1,28 @@
 import Carousel from "react-bootstrap/Carousel";
 import "bootstrap/dist/css/bootstrap.min.css";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Button from "react-bootstrap/Button";
 import axios from "axios";
 import "./home.css";
+import {v4} from 'uuid';
+import { NotificationContext } from "../Notifications/NotificationsProvider";
 
 const Home = (props) => {
   const { products, guestCart, setGuestCart } = props;
   const userKey = document.cookie;
+
+  const dispatch = useContext(NotificationContext);
+
+  const handleNewNotification = (prop) => {
+    dispatch({
+      type: "ADD_NOTIFICATION",
+      payload: {
+        id: v4(),
+        type: "SUCCESS",
+        message: `"${prop.name}" now added to cart!`,
+      },
+    });
+  }
 
   const handleSubmitAddToCart = async (item) => {
     try {
@@ -62,7 +77,10 @@ const Home = (props) => {
                   <p>{item.price}</p>
                   <Button
                     type="button"
-                    onClick={() => handleSubmitAddToCart(item)}
+                    onClick={() => {
+                      handleNewNotification(item);
+                      handleSubmitAddToCart(item);}
+                    }
                   >
                     Add to Cart
                   </Button>
@@ -97,7 +115,7 @@ const Home = (props) => {
         </div>
         <div class="featured__container">
           <div class="featured">
-            <h2>FEATURED ARTIST</h2>
+            <h2>ARTIST SPOTLIGHT</h2>
             <p>
               The universe Nigerian-American Njideka Akunyili Crosby depicts in
               her work is, according to her, neither Nigeria nor America, but

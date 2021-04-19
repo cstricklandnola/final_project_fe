@@ -25,4 +25,8 @@
   height: 500px;
   overflow: auto;
 }
+
+#cost-filter {
+  margin-bottom: 30px;
+}
 /*# sourceMappingURL=listings.css.map */
