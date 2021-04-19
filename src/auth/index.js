@@ -1,5 +1,5 @@
 export const storeToken = (token) => {
-    localStorage.setItem('token', JSON.stringify(token))
+    localStorage.setItem('token', token)
 }
 
 export const getToken = () => {
