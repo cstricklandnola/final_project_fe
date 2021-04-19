@@ -1,14 +1,30 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 
 import { CardColumns } from "react-bootstrap";
 import Spinner from "react-bootstrap/Spinner";
 import axios from "axios";
+import "./listings.css";
+import {v4} from 'uuid';
+import { NotificationContext } from "../Notifications/NotificationsProvider";
 
 const Listings = (props) => {
   const { setProducts, products, guestCart, setGuestCart } = props;
   const userKey = document.cookie;
+
+  const dispatch = useContext(NotificationContext);
+
+  const handleNewNotification = (prop) => {
+    dispatch({
+      type: "ADD_NOTIFICATION",
+      payload: {
+        id: v4(),
+        type: "SUCCESS",
+        message: `"${prop.name}" now added to cart!`,
+      },
+    });
+  }
 
   // OrderedStarted is state to determine if a cart has already been made for the user.
   const [searchItem, setSearchItem] = useState("");
@@ -39,14 +55,12 @@ const Listings = (props) => {
           })
         );
       } else {
-        axios
-          .post("https://intense-lowlands-29407.herokuapp.com/api/orders/", {
-            orderId: userKey,
-            productId: item.id,
-            status: "Processing",
-            quantity: "1",
-          })
-         
+        axios.post("https://intense-lowlands-29407.herokuapp.com/api/orders/", {
+          orderId: userKey,
+          productId: item.id,
+          status: "Processing",
+          quantity: "1",
+        });
       }
     } catch (error) {
       console.error(error);
@@ -59,7 +73,7 @@ const Listings = (props) => {
     //This filters our results! Name -> Cost.
     //We could use this to filter off one search bar, and have it progress down each possible data source.
 
-    let resultsFilter = products
+    let resultsFilter = products;
 
     if (resultsFilter) {
       if (searchItem.name) {
@@ -71,7 +85,6 @@ const Listings = (props) => {
       }
 
       if (resultsFilter.length === 0) {
-        
         //If the filter put is the point where nothing exists by name, it will then reload the database, and then search by description.
         resultsFilter = products.filter(function (dummy) {
           return dummy.description
@@ -100,37 +113,41 @@ const Listings = (props) => {
       }
       return resultsFilter.filter(function (dummy) {
         return dummy.isActive;
-      });;
+      });
     } else {
       return false;
     }
   };
   if (products[0] === undefined) {
     return (
-      <>
-        <h1>Welcome to The Shop Listings:</h1>
+      <div class="listings">
+        <h1>THE CRESCENT CITY ART COLLECTION</h1>
         <Spinner animation="border" role="status">
           <span className="sr-only">Loading...</span>
         </Spinner>
-      </>
+      </div>
     );
   } else {
     return (
-      <div>
-        <h1>Welcome to The Shop Listings:</h1>
-        <label>Search:</label>
+      <div class="listings">
+        <h1>THE CRESCENT CITY ART COLLECTION</h1>
         <input
           type="text"
+          style={{ width: "50%" }}
+          placeholder="Search by name, artist, etc..."
           onChange={(e) =>
             setSearchItem({ ...searchItem, name: e.target.value })
           }
         />
-        <label>Cost:</label>
+        <label style={{ color: "#fff", fontSize: "25px", marginTop: "30px" }}>
+          Filter by Cost:
+        </label>
 
         <input
+          id="cost-filter"
           type="range"
-          min="100"
-          max="10000"
+          min="250"
+          max="50000"
           onChange={(e) =>
             setSearchItem({ ...searchItem, price: e.target.value })
           }
@@ -140,19 +157,30 @@ const Listings = (props) => {
           <CardColumns>
             {filterResults().map((item, index) => {
               return (
-                <Card style={{ width: "18rem" }} className="mb-2">
-                  <Card.Img variant="top" src={item.img} />
-                  <Card.Body>
+                <Card
+                  style={{ width: "25rem", height: "auto" }}
+                  className="mb-2"
+                >
+                  <Card.Img
+                    variant="top"
+                    style={{ height: "auto", width: "25rem" }}
+                    src={item.img}
+                  />
+                  <Card.Body style={{ textAlign: "center" }}>
                     <Card.Text>
                       <h2>{item.name}</h2>
                       <h3>By: {item.artist}</h3>
                       <h4>{item.price}</h4>
                       <b>Description:</b> {item.description}
                       <p></p>
-
                       <Button
                         type="button"
-                        onClick={() => handleSubmitAddToCart(item)}
+                        onClick={() => {
+                          handleNewNotification(item);
+                          handleSubmitAddToCart(item); 
+                          }
+                        }
+                        
                       >
                         Add to Cart
                       </Button>
