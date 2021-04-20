@@ -1,0 +1,24 @@
+.listings {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60px;
+  background: url('./svg/abstract-splash-background-by-Vexels.svg');
+
+  h1 {
+    color: #fff;
+  }
+}
+
+.card-columns {
+  margin: 0 30px;
+}
+
+.card-text {
+  height: 500px;
+  overflow: auto;
+}
+
+#cost-filter {
+  margin-bottom: 30px;
+}

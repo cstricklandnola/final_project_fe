@@ -1,19 +1,18 @@
-import React, { useState, useEffect } from "react";
-import { storeToken } from "../auth";
+import React, { useState} from "react";
+import axios from "axios";
 import { Redirect } from "react-router-dom";
-
 import Button from "react-bootstrap/Button";
+import { getToken } from "../auth";
+import { Link } from "react-router-dom";
+const token = getToken();
 
-//||****************************************************||Delete whatever is contained in this ****************************************************||
-
-//**************************************************** Delete whatever is contained in this ****************************************************||
 
 const ManageSelectedUser = (props) => {
   const { selectedUser, admin } = props;
-  
 
   const [userPayload, setUserPayload] = useState({});
- // UserPayload is used to set the data needed for a Patch to the server.
+  const [changesMade, setChangesMade] = useState();
+  // UserPayload is used to set the data needed for a Patch to the server.
 
   // if(!admin){
   // This is the check to prevent non admins from even seeing the page.
@@ -22,40 +21,70 @@ const ManageSelectedUser = (props) => {
   const handleCommitChanges = async () => {
     try {
       //This creates the final Payload to send to the Patch for the Username.
-      let finalPayload = {}
+      let finalPayload = {};
 
       //If the payload is missing the data from the Selected Listing, it will add it into the payload.
-      if (!userPayload.name) {
-        
-        finalPayload.name = selectedUser.name ;
+      if (!userPayload.firstName) {
+        finalPayload.firstName = selectedUser.firstName;
+      } else {
+        finalPayload.firstName = userPayload.firstName;
       }
-      else{finalPayload.name = userPayload.name}
+      if (!userPayload.lastName) {
+        finalPayload.lastName = selectedUser.lastName;
+      } else {
+        finalPayload.lastName = userPayload.lastName;
+      }
       if (!userPayload.username) {
-        finalPayload.username = selectedUser.username ;
+        finalPayload.username = selectedUser.username;
+      } else {
+        finalPayload.username = userPayload.username;
       }
-      else{finalPayload.username = userPayload.username}
       if (!userPayload.isAdmin) {
-        finalPayload.isAdmin = selectedUser.isAdmin
-      }else{finalPayload.isAdmin = userPayload.isAdmin}
+        finalPayload.isAdmin = selectedUser.isAdmin;
+      } else {
+        finalPayload.isAdmin = userPayload.isAdmin;
+      }
       if (!userPayload.email) {
-        finalPayload.email = selectedUser.email
-      }else{finalPayload.email = userPayload.email}
-      console.log(finalPayload);
+        finalPayload.email = selectedUser.email;
+      } else {
+        finalPayload.email = userPayload.email;
+      }
+      
+
+      axios
+        .patch(
+          `https://intense-lowlands-29407.herokuapp.com/api/admin/manage_customer/${selectedUser.id}`,
+          {
+            firstName: finalPayload.firstName,
+            lastName: finalPayload.lastName,
+            username: finalPayload.username,
+            isAdmin: finalPayload.isAdmin,
+            isActive: finalPayload.isActive,
+            email: finalPayload.email,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        )
+        setChangesMade("Changes have been saved.")
+       
     } catch (error) {
       console.error(error);
-      
     }
   };
 
   const handlePasswordReset = async () => {
     try {
       //This assumes we can randomize a new password.
-      alert(selectedUser.userId + "has been sent a new password.")
+      alert(selectedUser.userId + "has been sent a new password.");
     } catch (error) {
       console.error(error);
-      
-    }}
-  
+    }
+  };
+
   //   if(!admin){
   //     return <Redirect to="/" />}
 
@@ -65,16 +94,25 @@ const ManageSelectedUser = (props) => {
     <div>
       <h1>Welcome to The Modify User Page:</h1>
       {selectedUser.username}
-      <li>userId: {selectedUser.userId}</li>
+      <li>userId: {selectedUser.id}</li>
       <li>isActive: {selectedUser.isActive}</li>
-      <li>name: {selectedUser.name}</li>
-      <label>Name:</label>
+      <label>First Name:</label>
       <input
-        name="name"
+        name="firstName"
         required
-        defaultValue={selectedUser.name}
+        defaultValue={selectedUser.firstName}
         onChange={(e) =>
-          setUserPayload({ ...userPayload, name: e.target.value })
+          setUserPayload({ ...userPayload, firstName: e.target.value })
+        }
+      />
+      <p></p>
+      <label>Last Name:</label>
+      <input
+        name="lastName"
+        required
+        defaultValue={selectedUser.lastName}
+        onChange={(e) =>
+          setUserPayload({ ...userPayload, lastName: e.target.value })
         }
       />
       <p></p>
@@ -108,21 +146,23 @@ const ManageSelectedUser = (props) => {
         }
       />
       <p></p>
-      
+
       <Button
         type="button"
-        variant="secondary"
+        variant="success"
         onClick={() => handleCommitChanges(userPayload)}
       >
         Commit Changes
       </Button>
-      <Button
+      <Link to="/ManageUsers"><Button
         type="button"
-        variant="secondary"
-        onClick={() => handlePasswordReset()}
+        variant="warning"
+        onClick={() => handleCommitChanges()}
       >
-        Reset Password
-      </Button>
+        Return to Listings
+      </Button></Link>
+<p></p> {changesMade}
+      
     </div>
   );
 };

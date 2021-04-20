@@ -1,21 +1,20 @@
-import React, { useState, useEffect } from "react";
-import { storeToken } from "../auth";
-import { Redirect } from "react-router-dom";
-
+import React, { useState } from "react";
+import axios from "axios";
 import Button from "react-bootstrap/Button";
-
-
+import { Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { getToken } from "../auth";
+const token = getToken();
 
 const ManageSelectedListing = (props) => {
   const { selectedListing, admin } = props;
-   // SelectedListing is used to push the data from ManageListing to ManageSelectedListing. 
+  // SelectedListing is used to push the data from ManageListing to ManageSelectedListing.
   const [listingPayload, setListingPayload] = useState({});
   // ListingPayload is used to set the data needed for a Patch to the server.
-  
+  const [changesMade, setChangesMade] = useState();
   // if(!admin){
   // This is the check to prevent non admins from even seeing the page.
   //   return <Redirect to="/" />}
-  
 
   const handleCommitChanges = async () => {
     try {
@@ -32,6 +31,11 @@ const ManageSelectedListing = (props) => {
         finalPayload.name = selectedListing.name;
       } else {
         finalPayload.name = listingPayload.name;
+      }
+      if (!listingPayload.artist) {
+        finalPayload.artist = selectedListing.artist;
+      } else {
+        finalPayload.artist = listingPayload.artist;
       }
       if (!listingPayload.description) {
         finalPayload.description = selectedListing.description;
@@ -63,7 +67,30 @@ const ManageSelectedListing = (props) => {
       } else {
         finalPayload.featured = listingPayload.featured;
       }
-      console.log(finalPayload);
+     
+
+      axios
+        .patch(
+          `https://intense-lowlands-29407.herokuapp.com/api/admin/${selectedListing.id}`,
+          {
+            name: finalPayload.name,
+            artist: finalPayload.artist,
+            featured: finalPayload.featured,
+            price: finalPayload.price,
+            description: finalPayload.description,
+            isActive: finalPayload.isActive,
+            img: finalPayload.img,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        )
+        setChangesMade("Changes have been saved.")
+      
+        
     } catch (error) {
       console.error(error);
     }
@@ -96,6 +123,16 @@ const ManageSelectedListing = (props) => {
         defaultValue={selectedListing.name}
         onChange={(e) =>
           setListingPayload({ ...listingPayload, name: e.target.value })
+        }
+      />
+      <p></p>
+      <label>Artist: </label>
+      <input
+        name="artist"
+        required
+        defaultValue={selectedListing.artist}
+        onChange={(e) =>
+          setListingPayload({ ...listingPayload, artist: e.target.value })
         }
       />
       <p></p>
@@ -152,11 +189,19 @@ const ManageSelectedListing = (props) => {
 
       <Button
         type="button"
-        variant="secondary"
+        variant="success"
         onClick={() => handleCommitChanges()}
       >
         Commit Changes
       </Button>
+      <Link to="/ManageListings"><Button
+        type="button"
+        variant="warning"
+        onClick={() => handleCommitChanges()}
+      >
+        Return to Listings
+      </Button></Link>
+      <p></p> {changesMade}
     </div>
   );
 };
