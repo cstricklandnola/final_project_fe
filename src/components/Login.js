@@ -3,6 +3,7 @@ import { storeToken } from "../auth";
 import { Redirect } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import axios from "axios";
+import './Register.css'
 
 const Login = (props) => {
   const [user, setUser] = useState("");
@@ -67,21 +68,25 @@ const Login = (props) => {
     return <Redirect to="/listings" />;
   } else {
     return (
-      <form onSubmit={handleSubmit}>
+      <form className="form-content" onSubmit={handleSubmit}>
+        <div className="form">
         <h1> Login:</h1>
         <label>Username:</label>
         <input
           name="Username"
+          placeholder="Enter your username"
           required
           onChange={(e) => setUser({ ...user, username: e.target.value })}
         />
         <label>Password:</label>
         <input
           type="password"
+          placeholder="Enter your password"
           required
           onChange={(e) => helperHandleSubmit(e)}
         />
-        <Button type="submit">submit</Button>
+        <Button id="button" type="submit">submit</Button>
+        </div>
       </form>
     );
   }
