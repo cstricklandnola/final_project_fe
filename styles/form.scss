@@ -1,0 +1,50 @@
+.form-content {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  margin: 0 auto;
+  padding: 60px;
+  text-align: center;
+  width: 70%;
+}
+
+.form {
+  background: center url("./svg/david-abstract-art-by-Vexels.svg"), gray;
+  border: 2px solid black;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.form h1, .form h2 {
+  color: #fff;
+}
+
+.form label {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: center;
+  font-size: 30px;
+  color: #fff;
+}
+
+input {
+  border: none;
+  text-align: center;
+  background: transparent;
+  color: #fff;
+  font-size: 20px;
+}
+
+#button {
+  margin-top: 20px;
+}
